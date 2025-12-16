@@ -18,7 +18,8 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "lint": "eslint src/",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
@@ -26,6 +27,7 @@
     "react": "^19.0.0"
   },
   "devDependencies": {
+    "@page-builder/config-eslint": "workspace:*",
     "@page-builder/config-tsconfig": "workspace:*",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/react": "^19.0.2",
