@@ -1,8 +1,8 @@
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
 // Extend dayjs with plugins
 dayjs.extend(relativeTime);
@@ -18,11 +18,8 @@ dayjs.extend(timezone);
  * @example formatDate(new Date()) // "December 16, 2025"
  * @example formatDate('2025-12-16', 'DD/MM/YYYY') // "16/12/2025"
  */
-export const formatDate = (
-  date: Date | string | number,
-  format: string = 'MMMM D, YYYY'
-): string => {
-  return dayjs(date).format(format);
+export const formatDate = (date: Date | string | number, format: string = "MMMM D, YYYY"): string => {
+    return dayjs(date).format(format);
 };
 
 /**
@@ -33,7 +30,7 @@ export const formatDate = (
  * @example formatRelativeTime('2025-12-14') // "2 days ago"
  */
 export const formatRelativeTime = (date: Date | string | number): string => {
-  return dayjs(date).fromNow();
+    return dayjs(date).fromNow();
 };
 
 /**
@@ -42,8 +39,8 @@ export const formatRelativeTime = (date: Date | string | number): string => {
  * @returns True if valid date
  */
 export const isValidDate = (date: unknown): boolean => {
-  if (date === null || date === undefined) return false;
-  return dayjs(date as string | number | Date).isValid();
+    if (date === null || date === undefined) return false;
+    return dayjs(date as string | number | Date).isValid();
 };
 
 /**
@@ -54,7 +51,7 @@ export const isValidDate = (date: unknown): boolean => {
  * @example parseDate('16/12/2025', 'DD/MM/YYYY')
  */
 export const parseDate = (dateString: string, format: string) => {
-  return dayjs(dateString, format);
+    return dayjs(dateString, format);
 };
 
 /**
@@ -66,11 +63,11 @@ export const parseDate = (dateString: string, format: string) => {
  * @example getDifference('2025-12-20', '2025-12-16') // 4 (days)
  */
 export const getDifference = (
-  date1: Date | string | number,
-  date2: Date | string | number,
-  unit: dayjs.UnitType = 'day'
+    date1: Date | string | number,
+    date2: Date | string | number,
+    unit: dayjs.UnitType = "day"
 ): number => {
-  return dayjs(date1).diff(dayjs(date2), unit);
+    return dayjs(date1).diff(dayjs(date2), unit);
 };
 
 /**
@@ -81,12 +78,8 @@ export const getDifference = (
  * @returns New date
  * @example addTime(new Date(), 7, 'day') // 7 days from now
  */
-export const addTime = (
-  date: Date | string | number,
-  amount: number,
-  unit: dayjs.ManipulateType = 'day'
-): Date => {
-  return dayjs(date).add(amount, unit).toDate();
+export const addTime = (date: Date | string | number, amount: number, unit: dayjs.ManipulateType = "day"): Date => {
+    return dayjs(date).add(amount, unit).toDate();
 };
 
 /**
@@ -98,11 +91,11 @@ export const addTime = (
  * @example subtractTime(new Date(), 7, 'day') // 7 days ago
  */
 export const subtractTime = (
-  date: Date | string | number,
-  amount: number,
-  unit: dayjs.ManipulateType = 'day'
+    date: Date | string | number,
+    amount: number,
+    unit: dayjs.ManipulateType = "day"
 ): Date => {
-  return dayjs(date).subtract(amount, unit).toDate();
+    return dayjs(date).subtract(amount, unit).toDate();
 };
 
 /**
@@ -113,7 +106,7 @@ export const subtractTime = (
  * @example startOf(new Date(), 'month') // First day of current month
  */
 export const startOf = (date: Date | string | number, unit: dayjs.OpUnitType): Date => {
-  return dayjs(date).startOf(unit).toDate();
+    return dayjs(date).startOf(unit).toDate();
 };
 
 /**
@@ -124,7 +117,7 @@ export const startOf = (date: Date | string | number, unit: dayjs.OpUnitType): D
  * @example endOf(new Date(), 'month') // Last day of current month
  */
 export const endOf = (date: Date | string | number, unit: dayjs.OpUnitType): Date => {
-  return dayjs(date).endOf(unit).toDate();
+    return dayjs(date).endOf(unit).toDate();
 };
 
 /**
@@ -134,7 +127,7 @@ export const endOf = (date: Date | string | number, unit: dayjs.OpUnitType): Dat
  * @returns True if date1 is before date2
  */
 export const isBefore = (date1: Date | string | number, date2: Date | string | number): boolean => {
-  return dayjs(date1).isBefore(dayjs(date2));
+    return dayjs(date1).isBefore(dayjs(date2));
 };
 
 /**
@@ -144,7 +137,7 @@ export const isBefore = (date1: Date | string | number, date2: Date | string | n
  * @returns True if date1 is after date2
  */
 export const isAfter = (date1: Date | string | number, date2: Date | string | number): boolean => {
-  return dayjs(date1).isAfter(dayjs(date2));
+    return dayjs(date1).isAfter(dayjs(date2));
 };
 
 /**
@@ -155,11 +148,11 @@ export const isAfter = (date1: Date | string | number, date2: Date | string | nu
  * @returns True if dates are the same
  */
 export const isSame = (
-  date1: Date | string | number,
-  date2: Date | string | number,
-  unit: dayjs.OpUnitType = 'day'
+    date1: Date | string | number,
+    date2: Date | string | number,
+    unit: dayjs.OpUnitType = "day"
 ): boolean => {
-  return dayjs(date1).isSame(dayjs(date2), unit);
+    return dayjs(date1).isSame(dayjs(date2), unit);
 };
 
 /**
@@ -168,7 +161,7 @@ export const isSame = (
  * @returns ISO string
  */
 export const toISOString = (date: Date | string | number): string => {
-  return dayjs(date).toISOString();
+    return dayjs(date).toISOString();
 };
 
 /**
@@ -176,7 +169,7 @@ export const toISOString = (date: Date | string | number): string => {
  * @returns Current date
  */
 export const now = (): Date => {
-  return dayjs().toDate();
+    return dayjs().toDate();
 };
 
 /**
@@ -187,9 +180,9 @@ export const now = (): Date => {
  * @returns Formatted date string in specified timezone
  */
 export const formatWithTimezone = (
-  date: Date | string | number,
-  timezone: string,
-  format: string = 'YYYY-MM-DD HH:mm:ss'
+    date: Date | string | number,
+    timezone: string,
+    format: string = "YYYY-MM-DD HH:mm:ss"
 ): string => {
-  return dayjs(date).tz(timezone).format(format);
+    return dayjs(date).tz(timezone).format(format);
 };

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import reactConfig from '@page-builder/config-eslint/react';
+import reactConfig from "../config/eslint/react.js";
 
 /**
  * ESLint configuration for host-root package

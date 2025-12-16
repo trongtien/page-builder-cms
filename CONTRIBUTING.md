@@ -3,51 +3,57 @@
 ## Development Setup
 
 1. **Fork and Clone**
-   ```bash
-   git clone https://github.com/yourusername/page-builder-cms.git
-   cd page-builder-cms
-   ```
+
+    ```bash
+    git clone https://github.com/yourusername/page-builder-cms.git
+    cd page-builder-cms
+    ```
 
 2. **Install Dependencies**
-   ```bash
-   pnpm install
-   ```
+
+    ```bash
+    pnpm install
+    ```
 
 3. **Create Branch**
-   ```bash
-   git checkout -b feature/your-feature
-   ```
+    ```bash
+    git checkout -b feature/your-feature
+    ```
 
 ## Code Standards
 
 ### TypeScript
+
 - Use strict mode
 - Define explicit types
 - Avoid `any` type
 - Use type guards
 
 ### Naming Conventions
+
 - **Files**: kebab-case (`user-service.ts`)
 - **Components**: PascalCase (`UserCard.tsx`)
 - **Functions**: camelCase (`formatDate`)
 - **Constants**: UPPER_SNAKE_CASE (`API_BASE_URL`)
 
 ### Import Order
+
 ```typescript
 // 1. External dependencies
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 
 // 2. Internal shared packages
-import { Button, Card } from '@page-builder/ui';
-import { formatDate } from '@page-builder/utils';
+import { Button, Card } from "@page-builder/ui";
+import { formatDate } from "@page-builder/utils";
 
 // 3. Local imports
-import { UserCard } from './UserCard';
-import type { User } from './types';
+import { UserCard } from "./UserCard";
+import type { User } from "./types";
 ```
 
 ### Component Structure
+
 ```typescript
 // 1. Imports
 import React from 'react';
@@ -99,6 +105,7 @@ Follow conventional commits:
 - `chore:` Maintenance
 
 Example:
+
 ```
 feat(ui): add loading spinner component
 

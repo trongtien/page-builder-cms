@@ -3,6 +3,7 @@
 ## 🎯 Vision & Goals
 
 Enterprise-grade monorepo for building scalable CMS applications with:
+
 - Clean, maintainable code architecture
 - Shared utilities to avoid code duplication
 - Type-safe development experience
@@ -14,11 +15,13 @@ Enterprise-grade monorepo for building scalable CMS applications with:
 ### 1. **Shared Packages Layer** (`packages/`)
 
 #### @page-builder/utils
+
 **Purpose**: Common utility functions used across the monorepo
 
 **Why?**: Eliminates code duplication, ensures consistency, single source of truth
 
 **What it contains**:
+
 - Date manipulation (formatting, relative time)
 - String operations (truncate, capitalize, slugify)
 - Async utilities (debounce, throttle, retry)
@@ -27,32 +30,38 @@ Enterprise-grade monorepo for building scalable CMS applications with:
 - Validation (email, URL, type guards)
 
 **Usage Example**:
+
 ```typescript
-import { formatDate, debounce, isValidEmail } from '@page-builder/utils';
+import { formatDate, debounce, isValidEmail } from "@page-builder/utils";
 ```
 
 #### @page-builder/ui
+
 **Purpose**: Reusable React UI components
 
 **Why?**: Consistent design system, reusable across apps, single source of truth for UI
 
 **What it contains**:
+
 - Button (variants, sizes, loading states)
 - Card (with title, hoverable)
 - Loading/Spinner (with sizes)
 - Future: Input, Select, Modal, etc.
 
 **Usage Example**:
+
 ```typescript
-import { Button, Card, Loading } from '@page-builder/ui';
+import { Button, Card, Loading } from "@page-builder/ui";
 ```
 
 #### @page-builder/tsconfig
+
 **Purpose**: Shared TypeScript configurations
 
 **Why?**: Consistent TS settings, easier maintenance, type-safe across packages
 
 **Configs**:
+
 - `base.json` - Base TypeScript config
 - `react.json` - React-specific (JSX, DOM libs)
 - `node.json` - Node.js specific
@@ -114,6 +123,7 @@ API Server
 ```
 
 Example:
+
 ```typescript
 // 1. Component uses hook
 const { users, loading } = useUsers();
@@ -122,45 +132,54 @@ const { users, loading } = useUsers();
 const data = await userService.getUsers();
 
 // 3. Service makes API request
-return apiService.get<User[]>('/users');
+return apiService.get<User[]>("/users");
 ```
 
 ## 🛠️ Development Tools
 
 ### Turborepo
+
 **Why?**: Fast builds, intelligent caching, parallel execution
 
 **Pipeline**:
+
 - `build`: Builds packages in dependency order
 - `dev`: Runs development servers (no caching)
 - `lint`: Lints all packages
 - `type-check`: Type checks all packages
 
 **Benefits**:
+
 - Caches build outputs (faster subsequent builds)
 - Runs tasks in parallel when possible
 - Only rebuilds changed packages
 
 ### pnpm Workspaces
+
 **Why?**: Fast, efficient, strict dependency management
 
 **Benefits**:
+
 - Saves disk space (content-addressable storage)
 - Faster installs (parallel downloads)
 - Strict node_modules (prevents phantom dependencies)
 
 ### TypeScript
+
 **Why?**: Type safety, better DX, catches errors early
 
 **Configuration Strategy**:
+
 - Shared configs in `@page-builder/tsconfig`
 - Apps extend shared configs
 - Path aliases for cleaner imports
 
 ### ESLint + Prettier
+
 **Why?**: Consistent code style, catch errors early
 
 **Benefits**:
+
 - Auto-format on save
 - Catch common mistakes
 - Enforce best practices
@@ -186,6 +205,7 @@ return apiService.get<User[]>('/users');
 ## 🎨 Design Patterns
 
 ### 1. **Composition over Inheritance**
+
 ```typescript
 // ✅ Good - Composable components
 <Card>
@@ -197,30 +217,35 @@ class ClickableCard extends Card { }
 ```
 
 ### 2. **Custom Hooks for Logic Reuse**
+
 ```typescript
 // ✅ Good - Reusable logic
 const { data, loading, error } = useUsers();
 
 // ❌ Bad - Logic in component
 const [users, setUsers] = useState([]);
-useEffect(() => { /* fetch logic */ }, []);
+useEffect(() => {
+    /* fetch logic */
+}, []);
 ```
 
 ### 3. **Service Layer for API Calls**
+
 ```typescript
 // ✅ Good - Centralized API logic
-userService.getUsers()
+userService.getUsers();
 
 // ❌ Bad - API calls in components
-fetch('/api/users')
+fetch("/api/users");
 ```
 
 ### 4. **Type-First Development**
+
 ```typescript
 // ✅ Good - Define types first
 interface User {
-  id: string;
-  name: string;
+    id: string;
+    name: string;
 }
 
 // ❌ Bad - Implicit any
@@ -230,18 +255,21 @@ const user = {}; // any type
 ## 🚀 Scaling Strategy
 
 ### Adding New Features
+
 1. Create feature folder in `src/features/[feature]`
 2. Create types, services, hooks, components
 3. Export from feature `index.ts`
 4. Use in routes
 
 ### Adding New Apps
+
 1. Create new package in `packages/[app]`
 2. Use shared packages (`@page-builder/ui`, `@page-builder/utils`)
 3. Configure in `turbo.json` pipeline
 4. Run with `pnpm --filter @page-builder/[app] dev`
 
 ### Adding New Shared Packages
+
 1. Create in `packages/[package]`
 2. Configure build (tsup/vite)
 3. Export from `index.ts`
@@ -250,16 +278,19 @@ const user = {}; // any type
 ## 📊 Performance Optimization
 
 ### Build Time
+
 - ✅ Turborepo caching
 - ✅ Parallel builds
 - ✅ Only rebuild changed packages
 
 ### Bundle Size
+
 - ✅ Tree-shaking (import only what you need)
 - ✅ Code splitting (route-based)
 - ✅ No duplicate dependencies
 
 ### Runtime
+
 - ✅ React 18 features (Suspense, Concurrent)
 - ✅ Vite HMR (instant feedback)
 - ✅ Lazy loading routes
@@ -267,28 +298,28 @@ const user = {}; // any type
 ## 🔐 Best Practices
 
 1. **DRY (Don't Repeat Yourself)**
-   - Use shared utilities from `@page-builder/utils`
-   - Create reusable components in `@page-builder/ui`
+    - Use shared utilities from `@page-builder/utils`
+    - Create reusable components in `@page-builder/ui`
 
 2. **Type Safety**
-   - Define types for all data structures
-   - Use type guards for runtime checks
-   - Avoid `any` type
+    - Define types for all data structures
+    - Use type guards for runtime checks
+    - Avoid `any` type
 
 3. **Clean Code**
-   - Small, focused functions
-   - Self-documenting variable names
-   - JSDoc comments for public APIs
+    - Small, focused functions
+    - Self-documenting variable names
+    - JSDoc comments for public APIs
 
 4. **Testing**
-   - Test utilities independently
-   - Test components in isolation
-   - Integration tests for features
+    - Test utilities independently
+    - Test components in isolation
+    - Integration tests for features
 
 5. **Documentation**
-   - README for each package
-   - JSDoc for functions
-   - Architecture docs (this file)
+    - README for each package
+    - JSDoc for functions
+    - Architecture docs (this file)
 
 ## 🎓 Learning Resources
 

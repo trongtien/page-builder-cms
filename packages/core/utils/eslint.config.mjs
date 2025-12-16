@@ -1,5 +1,5 @@
 // @ts-nocheck
-import baseConfig from '@page-builder/config-eslint/base';
+import baseConfig from "../../config/eslint/base.js";
 
 /**
  * ESLint configuration for core-utils package

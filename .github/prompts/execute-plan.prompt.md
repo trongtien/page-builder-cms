@@ -15,9 +15,9 @@ Ask me for:
 ## Step 2: Load the Plan
 
 - Request the planning doc contents or offer commands like:
-  ```bash
-  cat docs/ai/planning/feature-<name>.md
-  ```
+    ```bash
+    cat docs/ai/planning/feature-<name>.md
+    ```
 - Parse sections that represent task lists (look for headings + checkboxes `[ ]`, `[x]`).
 - Build an ordered queue of tasks grouped by section (e.g., Foundation, Core Features, Testing).
 
