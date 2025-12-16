@@ -28,8 +28,11 @@ export const deepMerge = <T extends Record<string, unknown>>(target: T, source: 
                     Object.assign(output, { [key]: sourceValue });
                 } else {
                     const targetValue = target[key as keyof T];
-                    if (isObject(targetValue)) {
-                        (output as Record<string, unknown>)[key] = deepMerge(targetValue, sourceValue);
+                    if (isObject(targetValue) && isObject(sourceValue)) {
+                        (output as Record<string, unknown>)[key] = deepMerge(
+                            targetValue as Record<string, unknown>,
+                            sourceValue as Record<string, unknown>
+                        );
                     }
                 }
             } else {
