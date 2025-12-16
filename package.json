@@ -1,0 +1,39 @@
+{
+  "name": "page-builder-cms",
+  "version": "1.0.0",
+  "private": true,
+  "description": "page handler config cmd landing page, master data config",
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "cmd",
+    "landing",
+    "portress",
+    "react",
+    "tanstack start"
+  ],
+  "author": "kevis",
+  "license": "ISC",
+  "packageManager": "pnpm@10.25.0",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@turbo/gen": "^2.3.3",
+    "prettier": "^3.4.2",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

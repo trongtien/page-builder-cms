@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* Button Styles */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary-600 text-white hover:bg-secondary-700 focus:ring-secondary-500;
+  }
+
+  .btn-danger {
+    @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-secondary-700 hover:bg-secondary-100 focus:ring-secondary-500;
+  }
+
+  .btn-small {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  .btn-medium {
+    @apply px-4 py-2 text-base;
+  }
+
+  .btn-large {
+    @apply px-6 py-3 text-lg;
+  }
+
+  .btn-full {
+    @apply w-full;
+  }
+
+  .btn-loading {
+    @apply cursor-wait opacity-75;
+  }
+
+  .btn-spinner {
+    @apply h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent;
+  }
+
+  /* Card Styles */
+  .card {
+    @apply rounded-xl border border-secondary-200 bg-white shadow-sm transition-shadow duration-200;
+  }
+
+  .card-hoverable {
+    @apply cursor-pointer hover:shadow-md;
+  }
+
+  .card-header {
+    @apply border-b border-secondary-100 px-6 py-4;
+  }
+
+  .card-title {
+    @apply text-lg font-semibold text-secondary-900;
+  }
+
+  .card-subtitle {
+    @apply mt-1 text-sm text-secondary-600;
+  }
+
+  .card-content {
+    @apply p-6;
+  }
+
+  /* Spinner Styles */
+  .spinner {
+    @apply animate-spin rounded-full border-2 border-secondary-300 border-t-primary-600;
+  }
+
+  .spinner-small {
+    @apply h-4 w-4;
+  }
+
+  .spinner-medium {
+    @apply h-8 w-8;
+  }
+
+  .spinner-large {
+    @apply h-12 w-12;
+  }
+
+  /* Loading Styles */
+  .loading {
+    @apply flex flex-col items-center justify-center gap-3;
+  }
+
+  .loading-fullscreen {
+    @apply fixed inset-0 z-50 bg-white/80 backdrop-blur-sm;
+  }
+
+  .loading-text {
+    @apply text-sm font-medium text-secondary-600;
+  }
+}
+
