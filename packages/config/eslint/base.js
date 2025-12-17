@@ -22,7 +22,8 @@ export default tseslint.config(
             "**/*.config.ts",
             "**/coverage/**",
             "**/.next/**",
-            "**/out/**"
+            "**/out/**",
+            "**/packages/config/tailwind/**"
         ]
     },
 

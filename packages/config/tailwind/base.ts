@@ -4,7 +4,7 @@ import type { Config } from "tailwindcss";
  * Shared Tailwind CSS configuration for all packages
  * This config provides the base theme and design tokens
  */
-const config: Config = {
+const config: Partial<Config> = {
     theme: {
         extend: {
             colors: {
