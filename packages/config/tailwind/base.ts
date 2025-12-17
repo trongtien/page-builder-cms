@@ -5,6 +5,7 @@ import type { Config } from "tailwindcss";
  * This config provides the base theme and design tokens
  */
 const config: Partial<Config> = {
+    content: [],
     theme: {
         extend: {
             colors: {
