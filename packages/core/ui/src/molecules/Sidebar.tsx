@@ -1,0 +1,57 @@
+import * as React from "react";
+import { cn } from "../lib/utils";
+import type { MenuItem } from "../types";
+import { MenuItemComponent } from "./SidebarMenuItem";
+
+interface SidebarProps {
+    isOpen: boolean;
+    logo?: React.ReactNode;
+    title?: string;
+    menuItems?: MenuItem[];
+}
+
+const Sidebar = React.memo<SidebarProps>(
+    ({ isOpen, logo, title = "Manager", menuItems = [] }) => {
+        return (
+            <aside
+                className={cn(
+                    "fixed left-0 top-0 z-40 h-screen transition-transform",
+                    isOpen ? "translate-x-0" : "-translate-x-full",
+                    "w-64 border-r bg-card"
+                )}
+            >
+                <div className="flex h-full flex-col">
+                    <div className="flex h-16 items-center border-b px-6">
+                        {logo || (
+                            <div className="flex items-center gap-2">
+                                <div className="h-8 w-8 rounded-lg bg-primary" />
+                                <span className="text-lg font-semibold">{title}</span>
+                            </div>
+                        )}
+                    </div>
+
+                    <nav className="flex-1 overflow-y-auto p-4">
+                        <ul className="space-y-2">
+                            {menuItems.map((item) => (
+                                <MenuItemComponent key={item.id} item={item} />
+                            ))}
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
+        );
+    },
+    (prevProps, nextProps) => {
+        // Only re-render if these specific props change
+        return (
+            prevProps.isOpen === nextProps.isOpen &&
+            prevProps.logo === nextProps.logo &&
+            prevProps.title === nextProps.title &&
+            prevProps.menuItems === nextProps.menuItems
+        );
+    }
+);
+Sidebar.displayName = "Sidebar";
+
+export { Sidebar };
+export type { SidebarProps };

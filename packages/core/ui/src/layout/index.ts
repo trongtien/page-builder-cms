@@ -1,1 +1,1 @@
-export * from "./manager-layout";
+export * from "./ManagerLayout";
