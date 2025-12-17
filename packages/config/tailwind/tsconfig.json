@@ -1,5 +1,5 @@
 {
-    "extends": "@page-builder/config-tsconfig/base.json",
+    "extends": "../tsconfig/base.json",
     "compilerOptions": {
         "module": "ESNext",
         "target": "ESNext",
