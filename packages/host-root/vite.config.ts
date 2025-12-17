@@ -24,11 +24,19 @@ export default defineConfig({
             "@/routes": path.resolve(__dirname, "./src/routes")
         }
     },
+    optimizeDeps: {
+        include: ["react", "react-dom", "@tanstack/react-router"],
+        exclude: ["@page-builder/core-ui", "@page-builder/core-utils", "@tanstack/router-devtools"],
+        force: true
+    },
     server: {
         port: 3000,
         open: true,
         hmr: {
             overlay: true
+        },
+        watch: {
+            ignored: ["!**/node_modules/@page-builder/**"]
         }
     },
     build: {
@@ -55,10 +63,6 @@ export default defineConfig({
         chunkSizeWarningLimit: 1000,
         sourcemap: false,
         reportCompressedSize: false
-    },
-    optimizeDeps: {
-        include: ["react", "react-dom", "@tanstack/react-router", "@page-builder/core-ui", "@page-builder/core-utils"],
-        exclude: ["@tanstack/router-devtools"]
     },
     css: {
         postcss: "./postcss.config.js"

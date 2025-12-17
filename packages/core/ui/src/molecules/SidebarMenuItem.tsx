@@ -41,7 +41,7 @@ const MenuItemComponent = React.memo<MenuItemComponentProps>(
                 }
             } else {
                 dispatch({ type: "SET_ACTIVE_ITEM", payload: item.id });
-                onItemClick?.(); // Close parent submenu if callback provided
+                onItemClick?.();
             }
         }, [hasChildren, item.id, dispatch, isCollapsed, showSubmenu, onItemClick]);
 

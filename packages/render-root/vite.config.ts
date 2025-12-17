@@ -18,12 +18,33 @@ export default defineConfig({
             "~": path.resolve(__dirname, "./app")
         }
     },
+    optimizeDeps: {
+        include: ["react", "react-dom", "@tanstack/react-router"],
+        exclude: ["@page-builder/core-ui", "@page-builder/core-utils", "@tanstack/router-devtools"],
+        force: true
+    },
     server: {
         port: 4000,
-        open: true
+        open: true,
+        hmr: {
+            overlay: true
+        },
+        watch: {
+            ignored: ["!**/node_modules/@page-builder/**"]
+        }
     },
     build: {
         outDir: "dist",
-        sourcemap: true
+        sourcemap: true,
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    "react-vendor": ["react", "react-dom"],
+                    "router-vendor": ["@tanstack/react-router"],
+                    "ui-vendor": ["@page-builder/core-ui"],
+                    "utils-vendor": ["@page-builder/core-utils"]
+                }
+            }
+        }
     }
 });

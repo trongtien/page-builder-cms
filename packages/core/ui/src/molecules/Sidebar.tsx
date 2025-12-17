@@ -46,7 +46,6 @@ const Sidebar = React.memo<SidebarProps>(
         );
     },
     (prevProps, nextProps) => {
-        // Only re-render if these specific props change
         return (
             prevProps.isOpen === nextProps.isOpen &&
             prevProps.logo === nextProps.logo &&
