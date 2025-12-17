@@ -1,5 +1,5 @@
 {
-    "cSpell.words": ["kevis"],
+    "cSpell.words": ["autoprefixer", "commitlint", "kevis", "lightningcss", "tanstack", "tsup", "vite", "vitejs"],
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": {

@@ -17,23 +17,23 @@
     "dependencies": {
         "@page-builder/core-ui": "workspace:*",
         "@page-builder/core-utils": "workspace:*",
-        "@tanstack/react-router": "^1.141.2",
-        "react": "^19.1.1",
-        "react-dom": "^19.1.1"
+        "@tanstack/react-router": "catalog:",
+        "react": "catalog:",
+        "react-dom": "catalog:"
     },
     "devDependencies": {
         "@page-builder/config-eslint": "workspace:*",
         "@page-builder/config-tailwind": "workspace:*",
         "@page-builder/config-tsconfig": "workspace:*",
-        "@tanstack/router-plugin": "^1.141.2",
-        "@types/node": "^22.19.1",
-        "@types/react": "^19.1.13",
-        "@types/react-dom": "^19.1.9",
-        "@vitejs/plugin-react": "^4.7.0",
-        "autoprefixer": "^10.4.22",
-        "postcss": "^8.5.6",
-        "tailwindcss": "3.4.17",
-        "typescript": "^5.9.3",
-        "vite": "^6.4.1"
+        "@tanstack/router-plugin": "catalog:",
+        "@types/node": "catalog:",
+        "@types/react": "catalog:",
+        "@types/react-dom": "catalog:",
+        "@vitejs/plugin-react": "catalog:",
+        "autoprefixer": "catalog:",
+        "postcss": "catalog:",
+        "tailwindcss": "catalog:",
+        "typescript": "catalog:",
+        "vite": "catalog:"
     }
 }

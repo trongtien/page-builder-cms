@@ -23,12 +23,12 @@
         "clean": "rm -rf dist"
     },
     "dependencies": {
-        "dayjs": "^1.11.18"
+        "dayjs": "catalog:"
     },
     "devDependencies": {
         "@page-builder/config-eslint": "workspace:*",
         "@page-builder/config-tsconfig": "workspace:*",
-        "tsup": "^8.3.5",
-        "typescript": "^5.7.2"
+        "tsup": "catalog:",
+        "typescript": "catalog:"
     }
 }

@@ -24,21 +24,21 @@
         "clean": "rm -rf dist"
     },
     "dependencies": {
-        "react": "^19.0.0"
+        "react": "catalog:"
     },
     "devDependencies": {
         "@page-builder/config-eslint": "workspace:*",
         "@page-builder/config-tailwind": "workspace:*",
         "@page-builder/config-tsconfig": "workspace:*",
-        "@tailwindcss/postcss": "^4.0.0",
-        "@types/react": "^19.0.2",
-        "autoprefixer": "^10.4.22",
-        "postcss": "^8.5.6",
-        "tailwindcss": "3.4.17",
-        "tsup": "^8.3.5",
-        "typescript": "^5.7.2"
+        "@tailwindcss/postcss": "catalog:",
+        "@types/react": "catalog:",
+        "autoprefixer": "catalog:",
+        "postcss": "catalog:",
+        "tailwindcss": "catalog:",
+        "tsup": "catalog:",
+        "typescript": "catalog:"
     },
     "peerDependencies": {
-        "react": "^19.0.0"
+        "react": "catalog:"
     }
 }
