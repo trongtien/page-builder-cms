@@ -15,25 +15,29 @@ const Sidebar = React.memo<SidebarProps>(
         return (
             <aside
                 className={cn(
-                    "fixed left-0 top-0 z-40 h-screen transition-transform",
-                    isOpen ? "translate-x-0" : "-translate-x-full",
-                    "w-64 border-r bg-card"
+                    "fixed left-0 top-0 z-40 h-screen transition-all duration-300",
+                    "border-r bg-card",
+                    isOpen ? "w-64" : "w-16"
                 )}
             >
                 <div className="flex h-full flex-col">
-                    <div className="flex h-16 items-center border-b px-6">
-                        {logo || (
-                            <div className="flex items-center gap-2">
-                                <div className="h-8 w-8 rounded-lg bg-primary" />
-                                <span className="text-lg font-semibold">{title}</span>
-                            </div>
+                    <div className="flex h-16 items-center border-b px-3">
+                        {isOpen ? (
+                            logo || (
+                                <div className="flex items-center gap-2">
+                                    <div className="h-8 w-8 rounded-lg bg-primary" />
+                                    <span className="text-lg font-semibold">{title}</span>
+                                </div>
+                            )
+                        ) : (
+                            <div className="h-8 w-8 rounded-lg bg-primary" />
                         )}
                     </div>
 
-                    <nav className="flex-1 overflow-y-auto p-4">
-                        <ul className="space-y-2">
+                    <nav className="flex-1 overflow-y-auto">
+                        <ul className="space-y-1">
                             {menuItems.map((item) => (
-                                <MenuItemComponent key={item.id} item={item} />
+                                <MenuItemComponent key={item.id} item={item} isCollapsed={!isOpen} />
                             ))}
                         </ul>
                     </nav>

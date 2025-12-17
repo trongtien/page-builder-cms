@@ -53,7 +53,7 @@ const ManagerLayout: React.FC<ManagerLayoutProps> = ({ children, config = {} }) 
             <div className="min-h-screen bg-background">
                 <Sidebar isOpen={state.sidebarOpen} logo={logo} title={title} menuItems={memoizedMenuItems} />
 
-                <div className={cn("transition-all", state.sidebarOpen ? "ml-64" : "ml-0")}>
+                <div className={cn("transition-all duration-300", state.sidebarOpen ? "ml-64" : "ml-16")}>
                     {/* Header */}
                     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-card px-6">
                         <Button variant="ghost" size="icon" onClick={toggleSidebar}>
