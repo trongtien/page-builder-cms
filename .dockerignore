@@ -1,0 +1,69 @@
+# Dependencies (exclude from build context - will be installed in container)
+**/node_modules
+node_modules
+.pnpm-store
+.npm
+
+# Build outputs (will be created in container)
+**/dist
+dist
+.next
+.turbo
+**/turbo
+build
+out
+
+# Development files
+.env.local
+.env.development
+.env.test
+*.local
+
+# Git
+.git
+.gitattributes
+
+# Documentation
+*.md
+!README.md
+docs/
+CHANGELOG.md
+
+# Tests
+**/__tests__
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+coverage
+.nyc_output
+
+# CI/CD (we need .github for metadata)
+.gitlab-ci.yml
+.travis.yml
+.circleci
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*.sublime-*
+
+# Misc
+.env.example
+docker-compose*.yml
+.dockerignore

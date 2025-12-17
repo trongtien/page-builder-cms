@@ -1,0 +1,42 @@
+{
+    "name": "@page-builder/host-root",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "type-check": "tsc --noEmit",
+        "clean": "rm -rf dist .turbo"
+    },
+    "dependencies": {
+        "@page-builder/core-ui": "workspace:*",
+        "@page-builder/core-utils": "workspace:*",
+        "@tanstack/react-router": "catalog:",
+        "@tanstack/router-devtools": "catalog:",
+        "react": "catalog:",
+        "react-dom": "catalog:"
+    },
+    "devDependencies": {
+        "@page-builder/config-eslint": "workspace:*",
+        "@page-builder/config-tailwind": "workspace:*",
+        "@page-builder/config-tsconfig": "workspace:*",
+        "@tanstack/router-plugin": "catalog:",
+        "@types/react": "catalog:",
+        "@types/react-dom": "catalog:",
+        "@typescript-eslint/eslint-plugin": "catalog:",
+        "@typescript-eslint/parser": "catalog:",
+        "@vitejs/plugin-react": "catalog:",
+        "autoprefixer": "catalog:",
+        "eslint": "catalog:",
+        "lightningcss": "catalog:",
+        "postcss": "catalog:",
+        "tailwindcss": "catalog:",
+        "terser": "catalog:",
+        "typescript": "catalog:",
+        "vite": "catalog:"
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "name": "@page-builder/render-root",
+    "version": "1.0.0",
+    "private": true,
+    "description": "TanStack Start SSR application",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "type-check": "tsc --noEmit",
+        "clean": "rm -rf .output .vinxi dist"
+    },
+    "packageManager": "pnpm@10.25.0",
+    "dependencies": {
+        "@page-builder/core-ui": "workspace:*",
+        "@page-builder/core-utils": "workspace:*",
+        "@tanstack/react-router": "catalog:",
+        "react": "catalog:",
+        "react-dom": "catalog:"
+    },
+    "devDependencies": {
+        "@page-builder/config-eslint": "workspace:*",
+        "@page-builder/config-tailwind": "workspace:*",
+        "@page-builder/config-tsconfig": "workspace:*",
+        "@tanstack/router-plugin": "catalog:",
+        "@types/node": "catalog:",
+        "@types/react": "catalog:",
+        "@types/react-dom": "catalog:",
+        "@vitejs/plugin-react": "catalog:",
+        "autoprefixer": "catalog:",
+        "postcss": "catalog:",
+        "tailwindcss": "catalog:",
+        "typescript": "catalog:",
+        "vite": "catalog:"
+    }
+}

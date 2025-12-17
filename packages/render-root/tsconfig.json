@@ -1,0 +1,19 @@
+{
+    "extends": "@page-builder/config-tsconfig/react.json",
+    "compilerOptions": {
+        "target": "ES2022",
+        "lib": ["ES2023", "DOM", "DOM.Iterable"],
+        "jsx": "react-jsx",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
+        "paths": {
+            "@/*": ["./app/*"],
+            "~/*": ["./app/*"]
+        }
+    },
+    "include": ["app/**/*.ts", "app/**/*.tsx", "vite.config.ts"],
+    "exclude": ["node_modules", ".output", ".vinxi", "dist"]
+}
