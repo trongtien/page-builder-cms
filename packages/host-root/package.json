@@ -22,6 +22,7 @@
     },
     "devDependencies": {
         "@page-builder/config-eslint": "workspace:*",
+        "@page-builder/config-tailwind": "workspace:*",
         "@page-builder/config-tsconfig": "workspace:*",
         "@tanstack/router-plugin": "^1.141.2",
         "@types/react": "^19.0.2",

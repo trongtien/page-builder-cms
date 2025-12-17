@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import uiConfig from "@page-builder/core-ui/tailwind.config";
+import sharedConfig from "@page-builder/config-tailwind";
 
 const config: Config = {
     content: [
@@ -8,7 +8,7 @@ const config: Config = {
         // Include core-ui components for hot reload
         "../core/ui/src/**/*.{ts,tsx}"
     ],
-    presets: [uiConfig],
+    presets: [sharedConfig],
     theme: {
         extend: {
             // Additional theme customization for host-root
