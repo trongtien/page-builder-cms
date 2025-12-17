@@ -1,4 +1,4 @@
-import { LayoutContext } from "@/contexts";
+import { LayoutContext } from "../contexts";
 import { use } from "react";
 
 export const useLayoutContext = () => {
