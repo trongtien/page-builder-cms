@@ -1,0 +1,97 @@
+# Dependencies (exclude from build context)
+**/node_modules
+node_modules
+.pnpm-store
+.npm
+**/pnpm-lock.yaml
+
+# Build outputs
+dist
+**/dist
+.next
+.turbo
+**/turbo
+build
+**/build
+out
+
+# Development files
+.env.local
+.env.development
+.env.test
+*.local
+.vscode
+.idea
+*.swp
+*.swo
+*.sublime-*
+
+# Git
+.git
+.gitignore
+.gitattributes
+.github
+
+# Documentation
+*.md
+docs/
+README.md
+CHANGELOG.md
+LICENSE
+
+# Tests
+**/__tests__
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+coverage
+.nyc_output
+jest.config.*
+vitest.config.*
+
+# CI/CD
+.github/workflows
+.gitlab-ci.yml
+.travis.yml
+.circleci
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+.editorconfig
+
+# Linting and formatting
+.eslintrc*
+.eslintcache
+.prettierrc*
+.prettierignore
+.stylelintrc*
+
+# TypeScript
+tsconfig*.json
+*.tsbuildinfo
+
+# Misc development files
+.env.example
+docker-compose*.yml
+Dockerfile*
+.dockerignore
