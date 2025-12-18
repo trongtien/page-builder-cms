@@ -8,7 +8,7 @@ interface SidebarProps {
     isOpen: boolean;
     logo?: React.ReactNode;
     title?: string;
-    menuItems?: MenuItem[];
+    menuItems?: ReadonlyArray<MenuItem>;
     children?: React.ReactNode;
     className?: string;
     layout?: ManagerLayoutInstance;

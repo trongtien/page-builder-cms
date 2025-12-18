@@ -86,7 +86,7 @@ export function useManagerLayout(options: UseManagerLayoutOptions = {}): Manager
         dispatch({ type: "TOGGLE_MENU_ITEM", payload: itemId });
     }, []);
 
-    const setExpandedMenus = React.useCallback((menuIds: Set<string>) => {
+    const setExpandedMenus = React.useCallback((menuIds: ReadonlySet<string>) => {
         dispatch({ type: "SET_EXPANDED_MENUS", payload: menuIds });
     }, []);
 

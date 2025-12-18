@@ -40,7 +40,7 @@ interface ManagerLayoutSidebarProps {
     children?: React.ReactNode;
     logo?: React.ReactNode;
     title?: string;
-    menuItems?: MenuItem[];
+    menuItems?: ReadonlyArray<MenuItem>;
     className?: string;
 }
 
@@ -88,7 +88,7 @@ interface ManagerLayoutHeaderProps {
     children?: React.ReactNode;
     showSearch?: boolean;
     user?: User;
-    headerMenuItems?: HeaderMenuItem[];
+    headerMenuItems?: ReadonlyArray<HeaderMenuItem>;
     onLogout?: () => void;
     className?: string;
 }

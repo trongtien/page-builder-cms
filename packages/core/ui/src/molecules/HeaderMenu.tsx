@@ -12,7 +12,7 @@ interface HeaderMenuProps {
     onToggleSidebar: () => void;
     onToggleUserMenu: () => void;
     onLogout?: () => void;
-    headerMenuItems?: HeaderMenuItem[];
+    headerMenuItems?: ReadonlyArray<HeaderMenuItem>;
     onHeaderMenuClick?: (menuId: string) => void;
     onSearch?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     children?: React.ReactNode;
