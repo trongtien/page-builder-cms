@@ -1,110 +1,183 @@
 import * as React from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
 import { cn } from "../lib/utils";
-import { LayoutContext, layoutReducer, type LayoutState } from "../contexts";
-import type { LayoutConfig } from "../types";
-import { Button } from "../common/Button";
+import type { MenuItem, User, HeaderMenuItem, LayoutConfig } from "../types";
+import { useManagerLayout, type ManagerLayoutInstance } from "../hooks/useManagerLayout";
 import { Sidebar } from "../molecules/Sidebar";
-import { UserMenu } from "../molecules/UserMenu";
+import { HeaderMenu } from "../molecules/HeaderMenu";
+import { SidebarMenuItem } from "../molecules/SidebarMenuItem";
 
-interface ManagerLayoutProps {
-    children: React.ReactNode;
-    config?: LayoutConfig;
+interface ManagerLayoutContextValue {
+    layout: ManagerLayoutInstance;
 }
 
-const initialState: LayoutState = {
-    sidebarOpen: true,
-    userMenuOpen: false,
-    expandedMenuItems: new Set(),
-    activeMenuItem: null
+const ManagerLayoutContext = React.createContext<ManagerLayoutContextValue | undefined>(undefined);
+
+const useManagerLayoutContext = () => {
+    const context = React.useContext(ManagerLayoutContext);
+    if (!context) {
+        throw new Error("ManagerLayout components must be used within ManagerLayout.Root");
+    }
+    return context;
 };
 
-const ManagerLayout: React.FC<ManagerLayoutProps> = ({ children, config = {} }) => {
-    const [state, dispatch] = React.useReducer(layoutReducer, initialState);
+interface ManagerLayoutRootProps {
+    children: React.ReactNode;
+    layout: ManagerLayoutInstance;
+    className?: string;
+}
 
-    const toggleSidebar = React.useCallback(() => {
-        dispatch({ type: "TOGGLE_SIDEBAR" });
-    }, []);
-
-    const toggleUserMenu = React.useCallback(() => {
-        dispatch({ type: "TOGGLE_USER_MENU" });
-    }, []);
-
-    const contextValue = React.useMemo(
-        () => ({
-            state,
-            dispatch,
-            config
-        }),
-        [state, config]
-    );
-
-    const { logo, title = "Manager", menuItems = [], user, showSearch = true, onLogout } = config;
-
-    const memoizedMenuItems = React.useMemo(() => menuItems, [menuItems]);
-
-    const handleLogout = React.useCallback(() => {
-        dispatch({ type: "SET_USER_MENU", payload: false });
-        onLogout?.();
-    }, [onLogout]);
+const ManagerLayoutRoot: React.FC<ManagerLayoutRootProps> = ({ children, layout, className }) => {
+    const contextValue = React.useMemo(() => ({ layout }), [layout]);
 
     return (
-        <LayoutContext.Provider value={contextValue}>
-            <div className="min-h-screen bg-background">
-                <Sidebar isOpen={state.sidebarOpen} logo={logo} title={title} menuItems={memoizedMenuItems} />
-
-                <div className={cn("transition-all duration-300", state.sidebarOpen ? "ml-64" : "ml-16")}>
-                    {/* Header */}
-                    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-card px-6">
-                        <Button variant="ghost" size="icon" onClick={toggleSidebar}>
-                            {state.sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                        </Button>
-
-                        {showSearch && (
-                            <div className="flex-1 max-w-md">
-                                <input
-                                    type="search"
-                                    placeholder="Search..."
-                                    className="w-full rounded-md border bg-background px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-                                />
-                            </div>
-                        )}
-
-                        <div className="ml-auto flex items-center gap-4">
-                            {/* User Menu */}
-                            {user && (
-                                <div className="relative">
-                                    <Button
-                                        variant="ghost"
-                                        className="flex items-center gap-2"
-                                        onClick={toggleUserMenu}
-                                    >
-                                        {user.avatar ? (
-                                            <img src={user.avatar} alt={user.name} className="h-8 w-8 rounded-full" />
-                                        ) : (
-                                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                                                {user.name.charAt(0).toUpperCase()}
-                                            </div>
-                                        )}
-                                        <span className="hidden md:inline">{user.name}</span>
-                                        <ChevronDown className="h-4 w-4" />
-                                    </Button>
-
-                                    {state.userMenuOpen && (
-                                        <UserMenu onLogout={handleLogout} onClose={toggleUserMenu} />
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    </header>
-
-                    {/* Page Content */}
-                    <main className="p-6">{children}</main>
-                </div>
-            </div>
-        </LayoutContext.Provider>
+        <ManagerLayoutContext.Provider value={contextValue}>
+            <div className={cn("min-h-screen bg-background", className)}>{children}</div>
+        </ManagerLayoutContext.Provider>
     );
 };
 
-export { ManagerLayout };
-export type { ManagerLayoutProps };
+interface ManagerLayoutSidebarProps {
+    children?: React.ReactNode;
+    logo?: React.ReactNode;
+    title?: string;
+    menuItems?: MenuItem[];
+    className?: string;
+}
+
+const ManagerLayoutSidebar: React.FC<ManagerLayoutSidebarProps> = ({
+    children,
+    logo,
+    title = "Manager",
+    menuItems = [],
+    className
+}) => {
+    const { layout } = useManagerLayoutContext();
+    const { state, config } = layout;
+
+    const finalLogo = logo ?? config.logo;
+    const finalTitle = title ?? config.title ?? "Manager";
+    const finalMenuItems = menuItems.length > 0 ? menuItems : (config.menuItems ?? []);
+
+    return (
+        <Sidebar
+            isOpen={state.isSidebarOpen}
+            logo={finalLogo}
+            title={finalTitle}
+            menuItems={finalMenuItems}
+            className={className}
+            layout={layout}
+        >
+            {children}
+        </Sidebar>
+    );
+};
+
+interface ManagerLayoutMenuItemProps {
+    item: MenuItem;
+    depth?: number;
+    isCollapsed?: boolean;
+    onItemClick?: () => void;
+}
+
+const ManagerLayoutMenuItem: React.FC<ManagerLayoutMenuItemProps> = (props) => {
+    const { layout } = useManagerLayoutContext();
+    return <SidebarMenuItem {...props} layout={layout} />;
+};
+
+interface ManagerLayoutHeaderProps {
+    children?: React.ReactNode;
+    showSearch?: boolean;
+    user?: User;
+    headerMenuItems?: HeaderMenuItem[];
+    onLogout?: () => void;
+    className?: string;
+}
+
+const ManagerLayoutHeader: React.FC<ManagerLayoutHeaderProps> = ({
+    children,
+    showSearch,
+    user,
+    headerMenuItems,
+    onLogout,
+    className
+}) => {
+    const { layout } = useManagerLayoutContext();
+    const { state, config, toggleSidebar, setSearchQuery, toggleUserMenu, setUserMenu } = layout;
+
+    const finalShowSearch = showSearch ?? config.showSearch ?? false;
+    const finalUser = user ?? config.user;
+    const finalHeaderMenuItems = headerMenuItems ?? config.headerMenuItems;
+
+    const handleLogout = React.useCallback(() => {
+        setUserMenu(false);
+        onLogout?.();
+        config.onLogout?.();
+    }, [onLogout, config, setUserMenu]);
+
+    const handleHeaderMenuClick = React.useCallback(
+        (menuId: string) => {
+            setUserMenu(false);
+            config.onHeaderMenuClick?.(menuId);
+        },
+        [config, setUserMenu]
+    );
+
+    const handleSearch = React.useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            setSearchQuery(e.target.value);
+        },
+        [setSearchQuery]
+    );
+
+    return (
+        <HeaderMenu
+            sidebarOpen={state.isSidebarOpen}
+            userMenuOpen={state.userMenuOpen}
+            showSearch={finalShowSearch}
+            user={finalUser}
+            searchQuery={state.searchQuery}
+            onToggleSidebar={toggleSidebar}
+            onToggleUserMenu={toggleUserMenu}
+            onLogout={handleLogout}
+            headerMenuItems={finalHeaderMenuItems}
+            onHeaderMenuClick={handleHeaderMenuClick}
+            onSearch={handleSearch}
+            className={className}
+        >
+            {children}
+        </HeaderMenu>
+    );
+};
+
+interface ManagerLayoutContentProps {
+    children: React.ReactNode;
+    className?: string;
+}
+
+const ManagerLayoutContent: React.FC<ManagerLayoutContentProps> = ({ children, className }) => {
+    const { layout } = useManagerLayoutContext();
+    const { state } = layout;
+
+    return (
+        <div className={cn("transition-all duration-300", state.isSidebarOpen ? "ml-64" : "ml-16")}>
+            <main className={cn("p-6", className)}>{children}</main>
+        </div>
+    );
+};
+
+const ManagerLayout = {
+    Root: ManagerLayoutRoot,
+    Sidebar: ManagerLayoutSidebar,
+    Header: ManagerLayoutHeader,
+    Content: ManagerLayoutContent,
+    MenuItem: ManagerLayoutMenuItem
+} as const;
+
+export { useManagerLayout, ManagerLayout };
+export type {
+    ManagerLayoutInstance,
+    ManagerLayoutRootProps,
+    ManagerLayoutSidebarProps,
+    ManagerLayoutHeaderProps,
+    ManagerLayoutContentProps
+};

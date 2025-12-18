@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import type { LayoutConfig } from "../types";
 
-export type LayoutAction =
+export type LegacyLayoutAction =
     | { type: "TOGGLE_SIDEBAR" }
     | { type: "SET_SIDEBAR"; payload: boolean }
     | { type: "TOGGLE_USER_MENU" }
@@ -18,13 +18,13 @@ export interface LayoutState {
 
 export interface LayoutContextType {
     state: LayoutState;
-    dispatch: React.Dispatch<LayoutAction>;
+    dispatch: React.Dispatch<LegacyLayoutAction>;
     config: LayoutConfig;
 }
 
 export const LayoutContext = createContext<LayoutContextType | undefined>(undefined);
 
-export const layoutReducer = (state: LayoutState, action: LayoutAction): LayoutState => {
+export const layoutReducer = (state: LayoutState, action: LegacyLayoutAction): LayoutState => {
     switch (action.type) {
         case "TOGGLE_SIDEBAR":
             return { ...state, sidebarOpen: !state.sidebarOpen };

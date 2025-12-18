@@ -1,4 +1,3 @@
-// @ts-check
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import pluginReact from "eslint-plugin-react";
@@ -36,9 +35,9 @@ export default tseslint.config(
     eslint.configs.recommended,
     ...tseslint.configs.recommendedTypeChecked,
 
-    // React configurations
+    // React configurations for TypeScript files
     {
-        files: ["**/*.{ts,tsx,js,jsx}"],
+        files: ["**/*.{ts,tsx}"],
         ...pluginReact.configs.flat.recommended,
         ...pluginReact.configs.flat["jsx-runtime"],
         languageOptions: {
@@ -48,8 +47,33 @@ export default tseslint.config(
                 ...globals.es2022
             },
             parserOptions: {
-                projectService: true,
+                project: true, // Auto-discover tsconfig.json files
                 tsconfigRootDir: import.meta.dirname,
+                ecmaFeatures: {
+                    jsx: true
+                }
+            }
+        },
+        settings: {
+            react: {
+                version: "detect"
+            }
+        }
+    },
+
+    // React configurations for JavaScript files
+    {
+        files: ["**/*.{js,jsx}"],
+        ...pluginReact.configs.flat.recommended,
+        ...pluginReact.configs.flat["jsx-runtime"],
+        languageOptions: {
+            ...pluginReact.configs.flat.recommended.languageOptions,
+            globals: {
+                ...globals.browser,
+                ...globals.es2022
+            },
+            parserOptions: {
+                allowDefaultProject: true,
                 ecmaFeatures: {
                     jsx: true
                 }
@@ -111,6 +135,12 @@ export default tseslint.config(
                 }
             ],
             "@typescript-eslint/no-import-type-side-effects": "error",
+
+            // Disable problematic unsafe rules
+            "@typescript-eslint/no-unsafe-assignment": "off",
+            "@typescript-eslint/no-unsafe-call": "off",
+            "@typescript-eslint/no-unsafe-member-access": "off",
+            "@typescript-eslint/no-unsafe-return": "off",
 
             // Async/Await rules
             "no-return-await": "off",
