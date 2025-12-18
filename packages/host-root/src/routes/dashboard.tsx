@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import {
     ManagerLayout,
@@ -13,6 +13,15 @@ import { Home, Users, Settings, FileText, BarChart } from "lucide-react";
 import type { MenuItem, User } from "@page-builder/core-ui";
 
 export const Route = createFileRoute("/dashboard")({
+    beforeLoad: () => {
+        // Check authentication from localStorage
+        const authToken = localStorage.getItem("auth_token");
+        if (!authToken) {
+            throw redirect({
+                to: "/"
+            });
+        }
+    },
     component: DashboardPage
 });
 
@@ -83,7 +92,6 @@ function DashboardPage() {
         defaultActiveItem: "home"
     });
 
-    // Handle potential error state from useManagerLayout
     if (!layout) {
         return <div>Loading...</div>;
     }

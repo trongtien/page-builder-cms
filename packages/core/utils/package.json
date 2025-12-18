@@ -28,7 +28,6 @@
     "devDependencies": {
         "@page-builder/config-eslint": "workspace:*",
         "@page-builder/config-tsconfig": "workspace:*",
-        "tsup": "catalog:",
-        "typescript": "catalog:"
+        "tsup": "catalog:"
     }
 }

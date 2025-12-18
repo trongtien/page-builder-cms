@@ -16,28 +16,11 @@
         "@page-builder/core-ui": "workspace:*",
         "@page-builder/core-utils": "workspace:*",
         "@tanstack/react-router": "catalog:",
-        "@tanstack/router-devtools": "catalog:",
-        "lucide-react": "^0.460.0",
-        "react": "catalog:",
-        "react-dom": "catalog:"
+        "@tanstack/router-devtools": "catalog:"
     },
     "devDependencies": {
         "@page-builder/config-eslint": "workspace:*",
         "@page-builder/config-tailwind": "workspace:*",
-        "@page-builder/config-tsconfig": "workspace:*",
-        "@tanstack/router-plugin": "catalog:",
-        "@types/react": "catalog:",
-        "@types/react-dom": "catalog:",
-        "@typescript-eslint/eslint-plugin": "catalog:",
-        "@typescript-eslint/parser": "catalog:",
-        "@vitejs/plugin-react": "catalog:",
-        "autoprefixer": "catalog:",
-        "eslint": "catalog:",
-        "lightningcss": "catalog:",
-        "postcss": "catalog:",
-        "tailwindcss": "catalog:",
-        "terser": "catalog:",
-        "typescript": "catalog:",
-        "vite": "catalog:"
+        "@page-builder/config-tsconfig": "workspace:*"
     }
 }

@@ -1,0 +1,7 @@
+# Ignore ESLint config files themselves
+*.js
+*.mjs
+*.cjs
+*.mts
+*.cts
+*.ts
