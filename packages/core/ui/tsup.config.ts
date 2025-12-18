@@ -12,5 +12,8 @@ export default defineConfig({
         options.banner = {
             js: '"use client"'
         };
+        // Note: Previously had "@": "./src" alias, but removed after refactoring
+        // to relative imports (e.g., "../lib/utils"). This avoids confusion in
+        // build contexts where the alias is unused.
     }
 });

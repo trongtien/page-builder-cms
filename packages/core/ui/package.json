@@ -20,10 +20,17 @@
         "dev": "tsup --watch",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
+        "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+        "format:check": "prettier --check \"src/**/*.{ts,tsx}\"",
         "type-check": "tsc --noEmit",
         "clean": "rm -rf dist"
     },
     "dependencies": {
+        "@floating-ui/react": "^0.27.16",
+        "@radix-ui/react-slot": "^1.2.3",
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
+        "lucide-react": "^0.460.0",
         "react": "catalog:"
     },
     "devDependencies": {
@@ -35,6 +42,7 @@
         "autoprefixer": "catalog:",
         "postcss": "catalog:",
         "tailwindcss": "catalog:",
+        "tailwindcss-animate": "^1.0.7",
         "tsup": "catalog:",
         "typescript": "catalog:"
     },

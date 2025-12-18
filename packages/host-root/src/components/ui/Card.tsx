@@ -1,2 +1,2 @@
-// Re-export Card from shared UI package
-export { Card, type CardProps } from "@page-builder/core-ui";
+// Re-export Card components from shared UI package
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "@page-builder/core-ui";
