@@ -11,7 +11,9 @@ const MOCK_USER: User = {
     id: "user-123",
     email: "admin@example.com",
     name: "Admin User",
-    avatar: "https://ui-avatars.com/api/?name=Admin+User&background=4f46e5&color=fff"
+    avatar: "https://ui-avatars.com/api/?name=Admin+User&background=4f46e5&color=fff",
+    role: "admin",
+    createdAt: new Date()
 };
 
 /**

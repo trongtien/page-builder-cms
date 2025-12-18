@@ -2,12 +2,10 @@
  * Authentication type definitions
  */
 
-export interface User {
-    id: string;
-    email: string;
-    name: string;
-    avatar?: string;
-}
+import type { User } from "../../users/types/user.types";
+
+// Re-export User type from users feature for convenience
+export type { User };
 
 export interface LoginCredentials {
     email: string;
