@@ -17,9 +17,7 @@
     "dependencies": {
         "@page-builder/core-ui": "workspace:*",
         "@page-builder/core-utils": "workspace:*",
-        "@tanstack/react-router": "catalog:",
-        "react": "catalog:",
-        "react-dom": "catalog:"
+        "@tanstack/react-router": "catalog:"
     },
     "devDependencies": {
         "@page-builder/config-eslint": "workspace:*",

@@ -16,10 +16,7 @@
         "@page-builder/core-ui": "workspace:*",
         "@page-builder/core-utils": "workspace:*",
         "@tanstack/react-router": "catalog:",
-        "@tanstack/router-devtools": "catalog:",
-        "lucide-react": "^0.460.0",
-        "react": "catalog:",
-        "react-dom": "catalog:"
+        "@tanstack/router-devtools": "catalog:"
     },
     "devDependencies": {
         "@page-builder/config-eslint": "workspace:*",

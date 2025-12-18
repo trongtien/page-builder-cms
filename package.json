@@ -26,6 +26,11 @@
         "clean": "turbo run clean && rm -rf node_modules",
         "prepare": "husky"
     },
+    "dependencies": {
+        "lucide-react": "^0.460.0",
+        "react": "catalog:",
+        "react-dom": "catalog:"
+    },
     "devDependencies": {
         "@commitlint/cli": "catalog:",
         "@commitlint/config-conventional": "catalog:",
