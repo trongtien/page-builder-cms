@@ -6,12 +6,29 @@
         "source.fixAll.eslint": "explicit"
     },
     "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+    "eslint.options": {
+        "overrideConfigFile": null
+    },
+    "eslint.probe": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+    "eslint.workingDirectories": [
+        {
+            "pattern": "packages/*"
+        }
+    ],
     "files.eol": "\n",
     "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.preferences.includePackageJsonAutoImports": "off",
+    "typescript.disableAutomaticTypeAcquisition": true,
+    "js/ts.implicitProjectConfig.checkJs": false,
     "css.validate": false,
     "less.validate": false,
     "scss.validate": false,
     "css.lint.unknownAtRules": "ignore",
     "scss.lint.unknownAtRules": "ignore",
-    "less.lint.unknownAtRules": "ignore"
+    "less.lint.unknownAtRules": "ignore",
+    "[typescript]": {
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "never"
+        }
+    }
 }

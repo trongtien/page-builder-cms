@@ -5,27 +5,30 @@
     "description": "Shared ESLint configurations using flat config (ESLint v9+)",
     "type": "module",
     "exports": {
-        "./base": "./base.js",
-        "./react": "./react.js",
-        "./node": "./node.js"
+        "./base": "./base.mts",
+        "./react": "./react.mts",
+        "./node": "./node.mts"
     },
     "files": [
-        "base.js",
-        "react.js",
-        "node.js"
+        "base.mts",
+        "react.mts",
+        "node.mts"
     ],
     "dependencies": {
         "@eslint/js": "catalog:",
-        "typescript-eslint": "catalog:",
-        "eslint-plugin-react": "catalog:",
-        "eslint-plugin-react-hooks": "catalog:",
+        "eslint-config-prettier": "catalog:",
         "eslint-plugin-jsx-a11y": "catalog:",
         "eslint-plugin-prettier": "catalog:",
-        "eslint-config-prettier": "catalog:",
-        "globals": "catalog:"
+        "eslint-plugin-react": "catalog:",
+        "eslint-plugin-react-hooks": "catalog:",
+        "globals": "catalog:",
+        "typescript-eslint": "catalog:"
     },
     "peerDependencies": {
         "eslint": "catalog:",
         "typescript": "catalog:"
+    },
+    "devDependencies": {
+        "@types/node": "catalog:"
     }
 }

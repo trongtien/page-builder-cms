@@ -3,49 +3,46 @@ import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import pluginPrettier from "eslint-plugin-prettier";
 import configPrettier from "eslint-config-prettier";
+import globals from "globals";
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /**
- * Base ESLint configuration for TypeScript projects
- * Optimized for performance and type safety
+ * Node.js ESLint configuration for TypeScript projects
+ * Optimized for backend and build tools
  */
-export default tseslint.config(
-    // Ignore patterns for better performance
+const config: ReturnType<typeof tseslint.config> = tseslint.config(
+    // Ignore patterns
     {
-        ignores: [
-            "**/dist/**",
-            "**/node_modules/**",
-            "**/build/**",
-            "**/.turbo/**",
-            "**/*.config.js",
-            "**/*.config.cjs",
-            "**/*.config.mjs",
-            "**/*.config.ts",
-            "**/coverage/**",
-            "**/.next/**",
-            "**/out/**",
-            "**/packages/config/tailwind/**"
-        ]
+        ignores: ["**/dist/**", "**/node_modules/**", "**/build/**", "**/.turbo/**", "**/coverage/**"]
     },
 
-    // ESLint recommended rules
+    // ESLint and TypeScript base configs
     eslint.configs.recommended,
-
-    // TypeScript recommended rules with performance optimizations
     ...tseslint.configs.recommendedTypeChecked,
 
-    // Custom rules for optimization and best practices
+    // Node.js specific configuration
     {
+        files: ["**/*.{ts,js,mjs,cjs}"],
         languageOptions: {
+            globals: {
+                ...globals.node,
+                ...globals.es2022
+            },
             parserOptions: {
-                projectService: true,
-                tsconfigRootDir: import.meta.dirname
+                projectService: {
+                    allowDefaultProject: []
+                },
+                tsconfigRootDir: __dirname
             }
         },
         plugins: {
             prettier: pluginPrettier
         },
         rules: {
-            // Performance optimizations
+            // TypeScript optimizations
             "@typescript-eslint/no-explicit-any": "warn",
             "@typescript-eslint/no-unused-vars": [
                 "warn",
@@ -56,8 +53,6 @@ export default tseslint.config(
                     caughtErrorsIgnorePattern: "^_"
                 }
             ],
-
-            // Code quality
             "@typescript-eslint/consistent-type-imports": [
                 "error",
                 {
@@ -71,12 +66,15 @@ export default tseslint.config(
             "no-return-await": "off",
             "@typescript-eslint/return-await": "error",
 
-            // Best practices
-            "no-console": ["warn", { allow: ["info", "warn", "error"] }],
+            // Node.js specific
+            "no-console": "off", // Console is normal in Node.js
+            "no-process-exit": "warn",
+
+            // Code quality
             "prefer-const": "error",
             "no-var": "error",
 
-            // Disable slow rules for performance
+            // Performance - disable slow rules
             "@typescript-eslint/no-floating-promises": "off",
             "@typescript-eslint/no-misused-promises": "off",
 
@@ -103,3 +101,5 @@ export default tseslint.config(
     // Prettier config to disable conflicting rules
     configPrettier
 );
+
+export default config;

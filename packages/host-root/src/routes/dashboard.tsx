@@ -17,8 +17,6 @@ export const Route = createFileRoute("/dashboard")({
         // Check authentication from localStorage
         const authToken = localStorage.getItem("auth_token");
         if (!authToken) {
-            // TanStack Router uses throw redirect() pattern
-            // eslint-disable-next-line @typescript-eslint/only-throw-error
             throw redirect({
                 to: "/"
             });

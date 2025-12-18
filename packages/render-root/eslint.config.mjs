@@ -1,3 +1,4 @@
-import reactConfig from "@page-builder/config-eslint/react";
+// @ts-nocheck
+import reactConfig from "../config/eslint/react.mts";
 
-export default [...reactConfig];
+export default reactConfig;

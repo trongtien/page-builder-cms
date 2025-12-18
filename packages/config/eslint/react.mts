@@ -11,7 +11,7 @@ import globals from "globals";
  * React ESLint configuration for TypeScript projects
  * Optimized for React 19 and modern practices
  */
-export default tseslint.config(
+const config: ReturnType<typeof tseslint.config> = tseslint.config(
     // Ignore patterns
     {
         ignores: [
@@ -27,13 +27,15 @@ export default tseslint.config(
             "**/.next/**",
             "**/out/**",
             "**/routeTree.gen.ts",
-            "**/*.gen.ts"
+            "**/*.gen.ts",
+            "**/eslint.config.*",
+            "packages/config/eslint/**"
         ]
     },
 
     // ESLint and TypeScript base configs
     eslint.configs.recommended,
-    ...tseslint.configs.recommendedTypeChecked,
+    ...tseslint.configs.recommended, // Use recommended instead of recommendedTypeChecked for shared config
 
     // React configurations for TypeScript files
     {
@@ -47,8 +49,6 @@ export default tseslint.config(
                 ...globals.es2022
             },
             parserOptions: {
-                project: true, // Auto-discover tsconfig.json files
-                tsconfigRootDir: import.meta.dirname,
                 ecmaFeatures: {
                     jsx: true
                 }
@@ -142,9 +142,8 @@ export default tseslint.config(
             "@typescript-eslint/no-unsafe-member-access": "off",
             "@typescript-eslint/no-unsafe-return": "off",
 
-            // Async/Await rules
+            // Async/Await rules - disabled because they require type information
             "no-return-await": "off",
-            "@typescript-eslint/return-await": "error",
             "@typescript-eslint/only-throw-error": "off", // Allow TanStack Router redirect()
 
             // React rules
@@ -187,3 +186,5 @@ export default tseslint.config(
     // Prettier config to disable conflicting rules
     configPrettier
 );
+
+export default config;

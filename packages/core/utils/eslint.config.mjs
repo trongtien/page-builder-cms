@@ -1,5 +1,5 @@
 // @ts-nocheck
-import baseConfig from "../../config/eslint/base.js";
+import baseConfig from "../../config/eslint/base.mts";
 
 /**
  * ESLint configuration for core-utils package
