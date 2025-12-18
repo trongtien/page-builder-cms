@@ -36,7 +36,15 @@
         "@commitlint/config-conventional": "catalog:",
         "@eslint/compat": "catalog:",
         "@eslint/js": "catalog:",
+        "@tanstack/router-plugin": "catalog:",
         "@turbo/gen": "catalog:",
+        "@types/node": "catalog:",
+        "@types/react": "catalog:",
+        "@types/react-dom": "catalog:",
+        "@typescript-eslint/eslint-plugin": "catalog:",
+        "@typescript-eslint/parser": "catalog:",
+        "@vitejs/plugin-react": "catalog:",
+        "autoprefixer": "catalog:",
         "eslint": "catalog:",
         "eslint-config-prettier": "catalog:",
         "eslint-plugin-jsx-a11y": "catalog:",
@@ -45,11 +53,16 @@
         "eslint-plugin-react-hooks": "catalog:",
         "globals": "catalog:",
         "husky": "catalog:",
+        "lightningcss": "catalog:",
         "lint-staged": "catalog:",
+        "postcss": "catalog:",
         "prettier": "catalog:",
+        "tailwindcss": "catalog:",
+        "terser": "catalog:",
         "turbo": "catalog:",
         "typescript": "catalog:",
-        "typescript-eslint": "catalog:"
+        "typescript-eslint": "catalog:",
+        "vite": "catalog:"
     },
     "workspaces": [
         "packages/*"
