@@ -145,6 +145,7 @@ export default tseslint.config(
             // Async/Await rules
             "no-return-await": "off",
             "@typescript-eslint/return-await": "error",
+            "@typescript-eslint/only-throw-error": "off", // Allow TanStack Router redirect()
 
             // React rules
             "react/prop-types": "off", // TypeScript handles this

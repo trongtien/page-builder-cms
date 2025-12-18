@@ -17,3 +17,7 @@ export interface PaginatedResponse<T> {
     page: number;
     pageSize: number;
 }
+
+// Re-export auth types from auth feature
+export type { User, LoginCredentials, AuthResponse, AuthState, AuthActions } from "../features/auth";
+export { AUTH_TOKEN_KEY, AUTH_USER_KEY } from "../features/auth";
