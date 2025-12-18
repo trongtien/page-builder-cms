@@ -1,7 +1,3 @@
-/**
- * Authentication type definitions
- */
-
 import type { User } from "../../users/types/user.types";
 
 // Re-export User type from users feature for convenience
