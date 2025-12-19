@@ -62,7 +62,8 @@
         "turbo": "catalog:",
         "typescript": "catalog:",
         "typescript-eslint": "catalog:",
-        "vite": "catalog:"
+        "vite": "catalog:",
+        "vitest": "^4.0.14"
     },
     "workspaces": [
         "packages/*"
