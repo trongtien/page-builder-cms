@@ -2,13 +2,10 @@ import { forwardRef, useEffect, useId, useRef, type TextareaHTMLAttributes } fro
 import { cn } from "../lib/utils";
 import { formClasses } from "../lib/formClass";
 import { FieldWrapper } from "./FieldWrapper";
+import type { BaseFieldProps } from "../types/field.type";
 
-export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-    label?: string;
-    helperText?: string;
-    error?: string;
+export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement>, BaseFieldProps {
     autoResize?: boolean;
-    wrapperClassName?: string;
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(

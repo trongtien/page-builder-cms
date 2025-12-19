@@ -6,13 +6,9 @@
 import { forwardRef, type InputHTMLAttributes } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { Input } from "./Input";
+import type { BaseFormFieldProps } from "../types/field.type";
 
-export interface FormInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "name"> {
-    name: string;
-    label?: string;
-    helperText?: string;
-    wrapperClassName?: string;
-}
+export interface FormInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "name">, BaseFormFieldProps {}
 
 export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
     ({ name, label, helperText, wrapperClassName, ...props }, ref) => {

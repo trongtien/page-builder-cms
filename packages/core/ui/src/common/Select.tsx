@@ -2,18 +2,12 @@ import { forwardRef, useId, type SelectHTMLAttributes } from "react";
 import { cn } from "../lib/utils";
 import { formClasses } from "../lib/formClass";
 import { FieldWrapper } from "./FieldWrapper";
+import type { BaseFieldProps, SelectOption } from "../types/field.type";
 
-export interface SelectOption {
-    value: string;
-    label: string;
-}
+export type { SelectOption };
 
-export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-    label?: string;
-    helperText?: string;
-    error?: string;
+export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement>, BaseFieldProps {
     options: SelectOption[];
-    wrapperClassName?: string;
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(

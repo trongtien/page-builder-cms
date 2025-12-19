@@ -6,12 +6,13 @@
 import { forwardRef, type InputHTMLAttributes } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { Checkbox } from "./Checkbox";
+import type { BaseFormFieldProps } from "../types/field.type";
 
-export interface FormCheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "name" | "type"> {
+export interface FormCheckboxProps
+    extends Omit<InputHTMLAttributes<HTMLInputElement>, "name" | "type">,
+        Omit<BaseFormFieldProps, "label"> {
     name: string;
     label: string;
-    helperText?: string;
-    wrapperClassName?: string;
 }
 
 export const FormCheckbox = forwardRef<HTMLInputElement, FormCheckboxProps>(

@@ -4,12 +4,10 @@ import { formClasses } from "../lib/formClass";
 import { Label } from "./Label";
 import { Message } from "./Message";
 import { HelperText } from "./HelperText";
+import type { BaseFieldProps } from "../types/field.type";
 
-export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type">, Omit<BaseFieldProps, "label"> {
     label: string;
-    helperText?: string;
-    error?: string;
-    wrapperClassName?: string;
 }
 
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(

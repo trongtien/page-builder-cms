@@ -6,13 +6,12 @@
 import { forwardRef, type TextareaHTMLAttributes } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { Textarea } from "./Textarea";
+import type { BaseFormFieldProps } from "../types/field.type";
 
-export interface FormTextareaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "name"> {
-    name: string;
-    label?: string;
-    helperText?: string;
+export interface FormTextareaProps
+    extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "name">,
+        BaseFormFieldProps {
     autoResize?: boolean;
-    wrapperClassName?: string;
 }
 
 export const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>(

@@ -2,13 +2,9 @@ import { forwardRef, useId, type InputHTMLAttributes } from "react";
 import { cn } from "../lib/utils";
 import { formClasses } from "../lib/formClass";
 import { FieldWrapper } from "./FieldWrapper";
+import type { BaseFieldProps } from "../types/field.type";
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-    label?: string;
-    helperText?: string;
-    error?: string;
-    wrapperClassName?: string;
-}
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement>, BaseFieldProps {}
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
     ({ label, helperText, error, className, wrapperClassName, disabled, id, ...props }, ref) => {

@@ -6,13 +6,10 @@
 import { forwardRef, type SelectHTMLAttributes } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { Select, type SelectOption } from "./Select";
+import type { BaseFormFieldProps } from "../types/field.type";
 
-export interface FormSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "name"> {
-    name: string;
-    label?: string;
-    helperText?: string;
+export interface FormSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "name">, BaseFormFieldProps {
     options: SelectOption[];
-    wrapperClassName?: string;
 }
 
 export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
