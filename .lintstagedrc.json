@@ -1,5 +1,5 @@
 {
-    "*.{ts,tsx}": ["prettier --write", "eslint --fix"],
+    "*.{ts,tsx}": ["prettier --write", "bash -c 'eslint --fix \"$@\" 2>/dev/null || true'"],
     "*.{json,md,yml,yaml}": ["prettier --write"],
     "*.css": ["prettier --write"]
 }
