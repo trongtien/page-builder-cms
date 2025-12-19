@@ -37,7 +37,7 @@ function AboutPage() {
                     type="password"
                     value={password}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                    error={showError ? "Password must be at least 8 characters" : undefined}
+                    error={showError ? "Password must be at least 8 characters" : ""}
                 />
 
                 <button
