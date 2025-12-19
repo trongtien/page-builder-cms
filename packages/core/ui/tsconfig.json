@@ -2,10 +2,11 @@
     "extends": "@page-builder/config-tsconfig/react.json",
     "compilerOptions": {
         "outDir": "dist",
-		"types": ["vitest/globals", "@testing-library/jest-dom"],
-		"paths": {
-			"@/*": ["./src/*"]
-		}
-	},
-	"include": ["src"],
-	"exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx", "vitest.config.ts", "vitest.setup.ts"]
+        "types": ["vitest/globals", "@testing-library/jest-dom"],
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx", "vitest.config.ts", "vitest.setup.ts"]
+}
