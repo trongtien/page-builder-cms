@@ -1,4 +1,4 @@
-import { createRootRoute, Outlet, Link } from "@tanstack/react-router";
+import { createRootRoute, Outlet, Link, useLocation } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { AuthProvider, useAuth } from "../features/auth";
 
@@ -12,11 +12,25 @@ function RootComponent() {
 
 function RootLayout() {
     const { isAuthenticated, isLoading, user, logout } = useAuth();
+    const location = useLocation();
+
+    // Check if current route is an auth page
+    const isAuthPage = location.pathname.startsWith("/login") || location.pathname.startsWith("/register");
 
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <div className="text-lg">Loading...</div>
+            </div>
+        );
+    }
+
+    // For auth pages, render without header
+    if (isAuthPage) {
+        return (
+            <div className="min-h-screen">
+                <Outlet />
+                <TanStackRouterDevtools />
             </div>
         );
     }
