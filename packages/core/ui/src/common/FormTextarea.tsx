@@ -1,21 +1,22 @@
 /**
- * FormCheckbox Component
- * Checkbox field integrated with react-hook-form
+ * FormTextarea Component
+ * Textarea field integrated with react-hook-form
  */
 
-import { forwardRef, type InputHTMLAttributes } from "react";
+import { forwardRef, type TextareaHTMLAttributes } from "react";
 import { useFormContext, Controller } from "react-hook-form";
-import { Checkbox } from "../../common/Checkbox";
+import { Textarea } from "./Textarea";
 
-export interface FormCheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "name" | "type"> {
+export interface FormTextareaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "name"> {
     name: string;
-    label: string;
+    label?: string;
     helperText?: string;
+    autoResize?: boolean;
     wrapperClassName?: string;
 }
 
-export const FormCheckbox = forwardRef<HTMLInputElement, FormCheckboxProps>(
-    ({ name, label, helperText, wrapperClassName, ...props }, ref) => {
+export const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>(
+    ({ name, label, helperText, autoResize, wrapperClassName, ...props }, ref) => {
         const {
             control,
             formState: { errors }
@@ -28,17 +29,16 @@ export const FormCheckbox = forwardRef<HTMLInputElement, FormCheckboxProps>(
             <Controller
                 name={name}
                 control={control}
-                render={({ field: { value, onChange, ...field } }) => (
-                    <Checkbox
+                render={({ field }) => (
+                    <Textarea
                         {...field}
                         {...props}
                         ref={ref}
                         label={label}
                         helperText={helperText}
                         error={errorMessage}
+                        autoResize={autoResize}
                         wrapperClassName={wrapperClassName}
-                        checked={!!value}
-                        onChange={(e) => onChange(e.target.checked)}
                     />
                 )}
             />
@@ -46,4 +46,4 @@ export const FormCheckbox = forwardRef<HTMLInputElement, FormCheckboxProps>(
     }
 );
 
-FormCheckbox.displayName = "FormCheckbox";
+FormTextarea.displayName = "FormTextarea";

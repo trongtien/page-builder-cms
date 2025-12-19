@@ -1,4 +1,4 @@
-import { forwardRef, type InputHTMLAttributes } from "react";
+import { forwardRef, useId, type InputHTMLAttributes } from "react";
 import { cn } from "../lib/utils";
 import { formClasses } from "../lib/formClass";
 import { Label } from "./Label";
@@ -14,7 +14,8 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     ({ label, helperText, error, className, wrapperClassName, disabled, id, ...props }, ref) => {
-        const inputId = id || props.name || `checkbox-${Math.random().toString(36).slice(2, 9)}`;
+        const generatedId = useId();
+        const inputId = id || generatedId;
 
         return (
             <div className={cn("w-full", wrapperClassName)}>

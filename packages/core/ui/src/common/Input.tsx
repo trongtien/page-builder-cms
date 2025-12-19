@@ -1,9 +1,7 @@
-import { forwardRef, type InputHTMLAttributes } from "react";
+import { forwardRef, useId, type InputHTMLAttributes } from "react";
 import { cn } from "../lib/utils";
 import { formClasses } from "../lib/formClass";
-import { Label } from "./Label";
-import { Message } from "./Message";
-import { HelperText } from "./HelperText";
+import { FieldWrapper } from "./FieldWrapper";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -14,11 +12,17 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
     ({ label, helperText, error, className, wrapperClassName, disabled, id, ...props }, ref) => {
-        const inputId = id || props.name || `input-${Math.random().toString(36).slice(2, 9)}`;
+        const generatedId = useId();
+        const inputId = id || generatedId;
 
         return (
-            <div className={cn("w-full", wrapperClassName)}>
-                {label && <Label htmlFor={inputId}>{label}</Label>}
+            <FieldWrapper
+                inputId={inputId}
+                label={label}
+                helperText={helperText}
+                error={error}
+                wrapperClassName={wrapperClassName}
+            >
                 <input
                     {...props}
                     id={inputId}
@@ -32,9 +36,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                     aria-invalid={error ? "true" : "false"}
                     aria-describedby={error ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined}
                 />
-                {helperText && !error && <HelperText id={`${inputId}-helper`}>{helperText}</HelperText>}
-                {error && <Message id={`${inputId}-error`}>{error}</Message>}
-            </div>
+            </FieldWrapper>
         );
     }
 );
