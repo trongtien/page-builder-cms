@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../lib/utils";
-import type { MenuItem, User, HeaderMenuItem, LayoutConfig } from "../types";
+import type { MenuItem, User, HeaderMenuItem } from "../types";
 import { useManagerLayout, type ManagerLayoutInstance } from "../hooks/useManagerLayout";
 import { Sidebar } from "../molecules/Sidebar";
 import { HeaderMenu } from "../molecules/HeaderMenu";

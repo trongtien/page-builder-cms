@@ -31,7 +31,6 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
                                 disabled && "cursor-not-allowed opacity-60",
                                 className
                             )}
-                            aria-invalid={error ? "true" : "false"}
                             aria-describedby={error ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined}
                         />
                     </div>

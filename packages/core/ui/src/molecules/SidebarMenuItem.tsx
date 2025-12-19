@@ -9,8 +9,8 @@ interface SidebarMenuItemProps {
     item: MenuItem;
     depth?: number;
     isCollapsed?: boolean;
-    onItemClick?: () => void;
     layout: ManagerLayoutInstance;
+    onItemClick?: () => void;
 }
 
 const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
@@ -40,19 +40,19 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
     });
 
     const handleClick = React.useCallback(() => {
-        if (hasChildren) {
-            if (isCollapsed) {
-                setShowSubmenu(!showSubmenu);
-            } else {
-                toggleMenuItem(item.id);
-            }
-        } else {
+        if (!hasChildren) {
             setActiveItem(item.id);
             onItemClick?.();
+            return;
+        }
+
+        if (isCollapsed) {
+            setShowSubmenu(!showSubmenu);
+        } else {
+            toggleMenuItem(item.id);
         }
     }, [hasChildren, item.id, isCollapsed, showSubmenu, setActiveItem, toggleMenuItem, onItemClick]);
 
-    // Collapsed view (only for top-level items)
     if (isCollapsed && depth === 0) {
         return (
             <li className="p-0">
@@ -69,7 +69,6 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
                     {item.icon && <span className="flex-shrink-0">{item.icon}</span>}
                 </button>
 
-                {/* Tooltip for items without children */}
                 {!hasChildren && tooltip.isOpen && (
                     <div
                         ref={tooltip.refs.setFloating}
@@ -81,7 +80,6 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
                     </div>
                 )}
 
-                {/* Floating submenu for items with children */}
                 {hasChildren && submenu.isOpen && (
                     <div
                         ref={submenu.refs.setFloating}
@@ -112,7 +110,6 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
         );
     }
 
-    // Expanded view
     return (
         <li className="p-0">
             <button
@@ -131,7 +128,6 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
                 )}
             </button>
 
-            {/* Recursive children */}
             {hasChildren && isExpanded && (
                 <ul className="mt-1 space-y-1">
                     {item.children?.map((child) => (
