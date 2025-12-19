@@ -6,3 +6,4 @@ export * from "./primitives";
 export * from "./pagination";
 export * from "./error";
 export * from "./response";
+export * from "./message-error";

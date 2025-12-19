@@ -11,19 +11,12 @@ import { z } from "zod";
 export const ErrorResponseSchema = z.object({
     success: z.literal(false),
     error: z.object({
-        /** Error code (e.g., "VALIDATION_ERROR", "NOT_FOUND") */
         code: z.string(),
-        /** Human-readable error message */
         message: z.string(),
-        /** Optional additional error details */
         details: z.record(z.unknown()).optional()
     })
 });
 
-/**
- * Validation error details schema
- * Used for form/input validation errors
- */
 export const ValidationErrorDetailsSchema = z.record(z.array(z.string()));
 
 /**
