@@ -10,8 +10,8 @@
         "skipLibCheck": true,
         "moduleResolution": "bundler",
         "module": "ESNext",
-        "target": "ES2022"
-    },
-    "include": ["src"],
-    "exclude": ["node_modules", "dist"]
-}
+		"target": "ES2022",
+		"types": ["vitest/globals"]
+	},
+	"include": ["src"],
+	"exclude": ["node_modules", "dist", "**/*.test.ts"]
