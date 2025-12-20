@@ -1,13 +1,7 @@
-/**
- * Authentication Context
- * Provides authentication state and actions using compound pattern
- */
-
 import { createContext, useState, useEffect, useMemo, type ReactNode } from "react";
 import type { AuthState, AuthActions, LoginCredentials } from "../types/auth.types";
 import * as authService from "../services/auth.service";
 
-// Split contexts for optimal re-rendering
 export const AuthStateContext = createContext<AuthState | undefined>(undefined);
 export const AuthActionsContext = createContext<AuthActions | undefined>(undefined);
 

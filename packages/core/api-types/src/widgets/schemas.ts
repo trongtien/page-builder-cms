@@ -12,7 +12,7 @@ export const spacingSchema = z.object({
     top: z.number().int().min(0).max(200).optional(),
     right: z.number().int().min(0).max(200).optional(),
     bottom: z.number().int().min(0).max(200).optional(),
-    left: z.number().int().min(0).max(200).optional(),
+    left: z.number().int().min(0).max(200).optional()
 });
 
 /**
@@ -25,7 +25,7 @@ export const commonPropsSchema = z.object({
         .string()
         .regex(/^#[0-9A-Fa-f]{6}$/, "Must be a valid hex color")
         .optional(),
-    hidden: z.boolean().optional(),
+    hidden: z.boolean().optional()
 });
 
 /**
@@ -33,14 +33,9 @@ export const commonPropsSchema = z.object({
  */
 export const baseWidgetSchema = z.object({
     id: z.string().uuid("Widget ID must be a valid UUID"),
-    type: z.enum([
-        "hero_banner",
-        "flash_sale",
-        "product_grid",
-        "quick_links",
-    ]),
+    type: z.enum(["hero_banner", "flash_sale", "product_grid", "quick_links"]),
     position: z.number().int().min(0, "Position must be non-negative"),
-    commonProps: commonPropsSchema,
+    commonProps: commonPropsSchema
 });
 
 // ============================================
@@ -59,15 +54,13 @@ export const heroBannerSchema = baseWidgetSchema.extend({
         subtitle: z.string().optional(),
         ctaText: z.string().optional(),
         ctaLink: z.string().url("CTA link must be a valid URL").optional(),
-        textPosition: z
-            .enum(["left", "center", "right"])
-            .default("center"),
+        textPosition: z.enum(["left", "center", "right"]).default("center"),
         overlayOpacity: z
             .number()
             .min(0, "Overlay opacity must be between 0 and 100")
             .max(100, "Overlay opacity must be between 0 and 100")
-            .default(40),
-    }),
+            .default(40)
+    })
 });
 
 // ============================================
@@ -81,9 +74,7 @@ export const flashSaleSchema = baseWidgetSchema.extend({
     type: z.literal("flash_sale"),
     props: z.object({
         campaignId: z.string().uuid("Campaign ID must be a valid UUID"),
-        countdownEndTime: z
-            .string()
-            .datetime("Must be a valid ISO 8601 datetime"),
+        countdownEndTime: z.string().datetime("Must be a valid ISO 8601 datetime"),
         displayStyle: z.enum(["grid", "carousel"]).default("grid"),
         productsPerRow: z
             .number()
@@ -91,8 +82,8 @@ export const flashSaleSchema = baseWidgetSchema.extend({
             .min(2, "Must show at least 2 products per row")
             .max(6, "Cannot show more than 6 products per row")
             .default(4),
-        showCountdown: z.boolean().default(true),
-    }),
+        showCountdown: z.boolean().default(true)
+    })
 });
 
 // ============================================
@@ -106,10 +97,7 @@ export const productGridSchema = baseWidgetSchema.extend({
     type: z.literal("product_grid"),
     props: z.object({
         dataSource: z.enum(["featured", "best_sellers", "category", "custom"]),
-        categoryId: z
-            .string()
-            .uuid("Category ID must be a valid UUID")
-            .optional(),
+        categoryId: z.string().uuid("Category ID must be a valid UUID").optional(),
         productIds: z.array(z.string().uuid()).optional(),
         limit: z
             .number()
@@ -122,8 +110,8 @@ export const productGridSchema = baseWidgetSchema.extend({
             .int()
             .min(1, "Must have at least 1 column")
             .max(6, "Cannot have more than 6 columns")
-            .default(4),
-    }),
+            .default(4)
+    })
 });
 
 // ============================================
@@ -137,7 +125,7 @@ export const linkItemSchema = z.object({
     id: z.string().uuid("Link ID must be a valid UUID"),
     label: z.string().min(1, "Link label is required"),
     url: z.string().url("Link URL must be valid"),
-    icon: z.string().optional(), // Icon name from icon library
+    icon: z.string().optional() // Icon name from icon library
 });
 
 /**
@@ -146,12 +134,9 @@ export const linkItemSchema = z.object({
 export const quickLinksSchema = baseWidgetSchema.extend({
     type: z.literal("quick_links"),
     props: z.object({
-        links: z
-            .array(linkItemSchema)
-            .min(1, "Must have at least one link")
-            .max(12, "Cannot have more than 12 links"),
-        layout: z.enum(["horizontal", "grid"]).default("horizontal"),
-    }),
+        links: z.array(linkItemSchema).min(1, "Must have at least one link").max(12, "Cannot have more than 12 links"),
+        layout: z.enum(["horizontal", "grid"]).default("horizontal")
+    })
 });
 
 // ============================================
@@ -165,7 +150,7 @@ export const widgetSchema = z.discriminatedUnion("type", [
     heroBannerSchema,
     flashSaleSchema,
     productGridSchema,
-    quickLinksSchema,
+    quickLinksSchema
 ]);
 
 // ============================================
@@ -176,13 +161,25 @@ export const widgetSchema = z.discriminatedUnion("type", [
  * Metadata for page configuration tracking
  */
 export const pageMetadataSchema = z.object({
-    createdBy: z.string().min(1, "Creator ID is required"),
+    createdBy: z.string().min(1, "Creator ID is required").optional(),
     createdAt: z.string().datetime("Must be a valid ISO 8601 datetime"),
-    updatedBy: z.string().min(1, "Updater ID is required"),
+    updatedBy: z.string().min(1, "Updater ID is required").optional(),
     updatedAt: z.string().datetime("Must be a valid ISO 8601 datetime"),
     publishedAt: z.string().datetime().optional(),
-    version: z.number().int().min(1, "Version must be at least 1").default(1),
+    status: z.enum(["draft", "published", "archived"]).default("draft"),
+    version: z.number().int().min(1, "Version must be at least 1").default(1)
 });
+
+/**
+ * Page SEO and display settings
+ */
+export const pageSettingsSchema = z
+    .object({
+        seoTitle: z.string().max(60).optional(),
+        seoDescription: z.string().max(160).optional(),
+        allowIndexing: z.boolean().default(true)
+    })
+    .optional();
 
 /**
  * Complete page configuration schema
@@ -191,19 +188,13 @@ export const pageConfigSchema = z.object({
     id: z.string().uuid("Page ID must be a valid UUID"),
     slug: z
         .string()
-        .regex(
-            /^[a-z0-9-]+$/,
-            "Slug must be lowercase letters, numbers, and hyphens only"
-        )
+        .regex(/^[a-z0-9-]+$/, "Slug must be lowercase letters, numbers, and hyphens only")
         .min(1, "Slug is required")
         .max(100, "Slug cannot exceed 100 characters"),
-    title: z
-        .string()
-        .min(1, "Title is required")
-        .max(200, "Title cannot exceed 200 characters"),
-    status: z.enum(["draft", "published", "archived"]),
-    widgets: z.array(widgetSchema),
+    title: z.string().min(1, "Title is required").max(200, "Title cannot exceed 200 characters"),
+    widgets: z.array(widgetSchema).default([]),
     metadata: pageMetadataSchema,
+    settings: pageSettingsSchema
 });
 
 // ============================================
@@ -222,6 +213,7 @@ export type QuickLinksWidget = z.infer<typeof quickLinksSchema>;
 
 export type Widget = z.infer<typeof widgetSchema>;
 export type PageMetadata = z.infer<typeof pageMetadataSchema>;
+export type PageSettings = z.infer<typeof pageSettingsSchema>;
 export type PageConfig = z.infer<typeof pageConfigSchema>;
 
 // Widget type helpers

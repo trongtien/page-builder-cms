@@ -1,0 +1,45 @@
+{
+    "name": "@page-builder/editor-builder",
+    "version": "0.0.1",
+    "private": true,
+    "description": "Visual page builder with drag-and-drop widget editor",
+    "type": "module",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
+    },
+    "scripts": {
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "type-check": "tsc --noEmit",
+        "clean": "rm -rf dist"
+    },
+    "dependencies": {
+        "@dnd-kit/core": "^6.3.1",
+        "@dnd-kit/sortable": "^10.0.0",
+        "@dnd-kit/utilities": "^3.2.2",
+        "@page-builder/api-types": "workspace:*",
+        "@page-builder/core-ui": "workspace:*",
+        "@page-builder/core-utils": "workspace:*",
+        "react": "catalog:",
+        "zod": "^3.23.8"
+    },
+    "devDependencies": {
+        "@page-builder/config-eslint": "workspace:*",
+        "@page-builder/config-tsconfig": "workspace:*",
+        "@types/node": "catalog:",
+        "@types/react": "catalog:",
+        "tsup": "catalog:",
+        "typescript": "catalog:"
+    },
+    "peerDependencies": {
+        "react": "^18.3.0"
+    }
+}
