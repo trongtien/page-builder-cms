@@ -227,9 +227,22 @@ export function PageBuilder({
     );
 
     // Handle property changes
-    const handlePropertyChange = useCallback((_widgetId: string, _updates: Partial<Widget>) => {
-        // TODO: Implement property updates in Phase 5
-        console.info("Property change:", _widgetId, _updates);
+    const handlePropertyChange = useCallback((widgetId: string, updates: Partial<Widget>) => {
+        setWidgets((prev) =>
+            prev.map((w) => {
+                if (w.id !== widgetId) return w;
+
+                // Merge updates carefully to maintain type safety
+                return {
+                    ...w,
+                    ...updates,
+                    // Ensure props are merged properly
+                    props: updates.props ? { ...w.props, ...updates.props } : w.props,
+                    // Ensure commonProps are merged properly
+                    commonProps: updates.commonProps ? { ...w.commonProps, ...updates.commonProps } : w.commonProps
+                } as Widget;
+            })
+        );
     }, []);
 
     // Get selected widget
