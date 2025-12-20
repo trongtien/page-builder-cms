@@ -25,10 +25,5 @@
     "scss.validate": false,
     "css.lint.unknownAtRules": "ignore",
     "scss.lint.unknownAtRules": "ignore",
-    "less.lint.unknownAtRules": "ignore",
-    "[typescript]": {
-        "editor.codeActionsOnSave": {
-            "source.fixAll.eslint": "never"
-        }
-    }
+    "less.lint.unknownAtRules": "ignore"
 }

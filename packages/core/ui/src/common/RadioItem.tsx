@@ -1,24 +1,13 @@
-import { forwardRef, type InputHTMLAttributes } from "react";
+import { forwardRef } from "react";
 import { cn } from "../lib/utils";
 import { formClasses } from "../lib/formClass";
 import { Label } from "./Label";
+import type { RadioInternal } from "@/types";
 
-export interface RadioOption {
-    value: string;
-    label: string;
-    disabled?: boolean;
-}
-
-export interface RadioItemProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
-    option: RadioOption;
-    groupName: string;
-    isChecked: boolean;
-    onItemChange: (value: string) => void;
-    error?: string;
-}
+export type RadioItemProps<T = unknown> = Omit<RadioInternal<T>, "layout">;
 
 export const RadioItem = forwardRef<HTMLInputElement, RadioItemProps>(
-    ({ option, groupName, isChecked, onItemChange, error, disabled, className, id, ...props }, ref) => {
+    ({ option, groupName, isChecked, onChange, error, disabled, className, id, ...props }, ref) => {
         const isDisabled = disabled || option.disabled;
 
         return (
@@ -33,7 +22,7 @@ export const RadioItem = forwardRef<HTMLInputElement, RadioItemProps>(
                         value={option.value}
                         checked={isChecked}
                         disabled={isDisabled}
-                        onChange={() => onItemChange(option.value)}
+                        onChange={() => onChange(option.value)}
                         className={cn(
                             formClasses.radio,
                             error && "ring-red-500 focus:ring-red-500",

@@ -1,17 +1,22 @@
-import { forwardRef, useId, type InputHTMLAttributes } from "react";
+import { forwardRef, useId } from "react";
 import { cn } from "../lib/utils";
 import { FieldWrapper } from "./FieldWrapper";
-import { RadioItem, type RadioOption } from "./RadioItem";
+import { RadioItem } from "./RadioItem";
+import type { RadioOptionItem as RadioOption } from "@/types";
 
-export interface RadioGroupProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "onChange"> {
+export interface RadioGroupProps<T = unknown> {
     label?: string;
     helperText?: string;
     error?: string;
-    options: RadioOption[];
+    options: RadioOption<T>[];
     layout?: "horizontal" | "vertical";
     wrapperClassName?: string;
     value?: string;
     onChange?: (value: string) => void;
+    disabled?: boolean;
+    className?: string;
+    id?: string;
+    name?: string;
 }
 
 export const RadioGroup = forwardRef<HTMLInputElement, RadioGroupProps>(
@@ -19,7 +24,7 @@ export const RadioGroup = forwardRef<HTMLInputElement, RadioGroupProps>(
         {
             label,
             helperText,
-            error,
+            error: errorMessage,
             options,
             layout = "vertical",
             className,
@@ -48,7 +53,7 @@ export const RadioGroup = forwardRef<HTMLInputElement, RadioGroupProps>(
                 inputId={generatedId}
                 label={label}
                 helperText={helperText}
-                error={error}
+                error={errorMessage}
                 wrapperClassName={wrapperClassName}
             >
                 <div
@@ -59,23 +64,23 @@ export const RadioGroup = forwardRef<HTMLInputElement, RadioGroupProps>(
                     )}
                     role="radiogroup"
                     aria-labelledby={label ? `${groupId}-label` : undefined}
-                    aria-describedby={error ? `${groupId}-error` : helperText ? `${groupId}-helper` : undefined}
+                    aria-describedby={errorMessage ? `${groupId}-error` : helperText ? `${groupId}-helper` : undefined}
                 >
-                    {options.map((option, index) => {
+                    {options.map((opt, index: number) => {
                         const optionId = `${groupId}-option-${index}`;
-                        const isChecked = value === option.value;
+                        const isChecked = value === opt.value;
 
                         return (
                             <RadioItem
-                                key={option.value}
+                                key={opt.value}
                                 {...props}
                                 ref={index === 0 ? ref : undefined}
                                 id={optionId}
-                                option={option}
+                                option={opt}
                                 groupName={groupName}
                                 isChecked={isChecked}
-                                onItemChange={handleChange}
-                                error={error}
+                                onChange={handleChange}
+                                error={errorMessage}
                                 disabled={disabled}
                                 className={className}
                             />

@@ -1,10 +1,3 @@
-/**
- * Common field types for form components
- */
-
-/**
- * Base props shared by all field components
- */
 export interface BaseFieldProps {
     label?: string;
     helperText?: string;
@@ -12,9 +5,6 @@ export interface BaseFieldProps {
     wrapperClassName?: string;
 }
 
-/**
- * Base props for form-integrated field components (without error prop)
- */
 export interface BaseFormFieldProps {
     name: string;
     label?: string;
@@ -22,9 +12,6 @@ export interface BaseFormFieldProps {
     wrapperClassName?: string;
 }
 
-/**
- * Select option type
- */
 export interface SelectOption {
     value: string;
     label: string;
