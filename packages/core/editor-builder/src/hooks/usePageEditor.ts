@@ -1,7 +1,8 @@
-import { useCallback, useReducer } from "react";
+import { useCallback, useReducer, useEffect } from "react";
 import { ZodError } from "zod";
 import type { PageConfig, Widget } from "@page-builder/api-types";
 import { widgetSchema, pageConfigSchema } from "@page-builder/api-types";
+import { savePageDraft, loadPageDraft, clearPageDraft } from "./useLocalStorage";
 
 /**
  * Validation error type
@@ -326,8 +327,13 @@ export interface UsePageEditorReturn extends EditorState {
  * ```
  */
 export function usePageEditor(initialPage?: PageConfig): UsePageEditorReturn {
+    // Try to load draft from localStorage first
+    const pageId = initialPage?.id;
+    const draftPage = pageId ? loadPageDraft(pageId) : null;
+    const startingPage = draftPage || initialPage || null;
+
     const [state, dispatch] = useReducer(editorReducer, {
-        page: initialPage || null,
+        page: startingPage,
         selectedWidgetId: null,
         isDirty: false,
         isSaving: false,
@@ -335,6 +341,22 @@ export function usePageEditor(initialPage?: PageConfig): UsePageEditorReturn {
         error: null,
         validationErrors: new Map()
     });
+
+    // Auto-save to localStorage when page changes (debounced)
+    useEffect(() => {
+        if (!pageId || !state.page || !state.isDirty) return;
+
+        const timeoutId = setTimeout(() => {
+            if (state.page) {
+                const saved = savePageDraft(pageId, state.page);
+                if (saved) {
+                    console.info(`Draft auto-saved to localStorage for page: ${pageId}`);
+                }
+            }
+        }, 2000); // 2 second debounce
+
+        return () => clearTimeout(timeoutId);
+    }, [pageId, state.page, state.isDirty]);
 
     const actions: EditorActions = {
         addWidget: useCallback((widget: Widget, position?: number) => {
@@ -387,6 +409,11 @@ export function usePageEditor(initialPage?: PageConfig): UsePageEditorReturn {
 
                 // Placeholder to simulate async operation
                 await Promise.resolve();
+
+                // Clear localStorage draft after successful save
+                if (state.page?.id) {
+                    clearPageDraft(state.page.id);
+                }
 
                 dispatch({ type: "CLEAR_DIRTY" });
             } catch (error) {

@@ -149,11 +149,26 @@ export function PageBuilder({
     };
 
     // Use page editor hook for state management
-    const { page, selectedWidgetId, isDirty: _isDirty, actions } = usePageEditor(initialPage);
+    const { page, selectedWidgetId, isDirty, actions } = usePageEditor(initialPage);
     const widgets = page?.widgets || [];
 
     // Track active widget type during drag
     const [activeWidgetType, setActiveWidgetType] = useState<WidgetType | null>(null);
+
+    // Warn before leaving with unsaved changes
+    useEffect(() => {
+        if (!isDirty) return;
+
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            e.preventDefault();
+            // Modern browsers require returnValue to be set
+            e.returnValue = "";
+            return "";
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+    }, [isDirty]);
 
     // Configure DnD sensors with optimized settings
     const sensors = useSensors(
