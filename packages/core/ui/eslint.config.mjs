@@ -7,12 +7,6 @@ import reactConfig from "../../config/eslint/react.mts";
 export default [
     ...reactConfig,
     {
-		ignores: ["**/*.test.ts", "**/*.test.tsx", "**/vitest.config.ts", "**/vitest.setup.ts"]
-	},
-	{
-                    depth: 3
-                }
-            ]
-        }
+        ignores: ["**/*.test.ts", "**/*.test.tsx", "**/vitest.config.ts", "**/vitest.setup.ts"]
     }
 ];

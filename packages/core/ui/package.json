@@ -40,15 +40,12 @@
         "@page-builder/config-eslint": "workspace:*",
         "@page-builder/config-tailwind": "workspace:*",
         "@page-builder/config-tsconfig": "workspace:*",
-        "@tailwindcss/postcss": "catalog:",
+        "@page-builder/config-tsup": "workspace:*",
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.0",
         "@testing-library/user-event": "^14.6.1",
-        "@vitejs/plugin-react": "catalog:",
         "jsdom": "^26.1.0",
-        "tailwindcss-animate": "^1.0.7",
-        "tsup": "catalog:",
-        "vitest": "^4.0.14"
+        "tailwindcss-animate": "^1.0.7"
     },
     "peerDependencies": {
         "react": "catalog:"

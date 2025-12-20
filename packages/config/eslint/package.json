@@ -27,8 +27,5 @@
     "peerDependencies": {
         "eslint": "catalog:",
         "typescript": "catalog:"
-    },
-    "devDependencies": {
-        "@types/node": "catalog:"
     }
 }

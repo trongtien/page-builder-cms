@@ -20,6 +20,76 @@ This project uses ai-devkit for structured AI-assisted development. Phase docume
 - Write clear, self-documenting code with meaningful variable names
 - Add comments for complex logic or non-obvious decisions
 
+## Dependency Management
+
+- **NO duplicate dependencies**: All common devDependencies must be defined in root `package.json`
+- Only declare package-specific dependencies in child package.json files
+- Use `catalog:` references for all shared dependencies defined in `pnpm-workspace.yaml`
+- Common dev tools that should ALWAYS be in root only:
+    - Build tools: `tsup`, `vite`, `@vitejs/plugin-react`
+    - Type definitions: `@types/node`, `@types/react`, `@types/react-dom`
+    - Linting/formatting: `eslint`, `prettier`, `typescript`
+    - Testing: `vitest`, `@testing-library/*`, `jsdom`
+    - Tailwind: `tailwindcss`, `@tailwindcss/postcss`, `tailwindcss-animate`
+- Child packages should only have workspace references (`workspace:*`) and package-specific dependencies
+- Before adding any devDependency to a child package, check if it already exists in root
+
+## Build Configuration
+
+### Shared Configs (packages/config/)
+
+All shared configurations live in `packages/config/` and should be used via workspace references:
+
+#### TSConfig (`@page-builder/config-tsconfig`)
+
+- `base.json` - For utility libraries and API types (Node.js environment)
+- `react.json` - For React component libraries (Browser + JSX)
+- `node.json` - For Node.js scripts and tools
+
+#### ESLint (`@page-builder/config-eslint`)
+
+- `base.mts` - Base ESLint rules for all TypeScript projects
+- `react.mts` - React-specific rules (extends base + React/JSX/a11y)
+- `node.mts` - Node.js-specific rules (extends base)
+
+#### Tailwind (`@page-builder/config-tailwind`)
+
+- `base.ts` - Shared Tailwind configuration with design tokens
+
+#### Tsup (`@page-builder/config-tsup`)
+
+- `base.ts` - For utility libraries and API types
+    - **Use for**: `@page-builder/core-utils`, `@page-builder/api-types`
+    - Output: ESM + CJS formats
+    - Features: Dual format, sourcemaps, declaration files, tree shaking
+- `react.ts` - For React component libraries
+    - **Use for**: `@page-builder/core-ui`
+    - Output: ESM only
+    - Features: "use client" directive, external React, sourcemaps, declaration files
+
+### When to Use Which Config
+
+**For utility/helper packages (utils, api-types):**
+
+```typescript
+// tsup.config.ts
+import baseConfig from "@page-builder/config-tsup/base";
+export default baseConfig;
+```
+
+**For React component libraries (ui):**
+
+```typescript
+// tsup.config.ts
+import reactConfig from "@page-builder/config-tsup/react";
+export default reactConfig;
+```
+
+**For apps (host-root, render-root):**
+
+- Use Vite directly (no tsup needed)
+- Reference `@page-builder/config-tailwind` for Tailwind config
+
 ## Development Workflow
 
 - Review phase documentation in `docs/ai/` before implementing features

@@ -6,7 +6,7 @@ const config: Config = {
         "./index.html",
         "./src/**/*.{ts,tsx}",
         // Include core-ui components for hot reload
-        "../core/ui/src/**/*.{ts,tsx}"
+        "../../packages/core/ui/src/**/*.{ts,tsx}"
     ],
     presets: [sharedConfig],
     theme: {

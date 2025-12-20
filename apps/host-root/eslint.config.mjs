@@ -1,5 +1,5 @@
 // @ts-nocheck
-import reactConfig from "../config/eslint/react.mts";
+import reactConfig from "../../packages/config/eslint/react.mts";
 
 /**
  * ESLint configuration for host-root package
