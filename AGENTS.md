@@ -67,6 +67,18 @@ All shared configurations live in `packages/config/` and should be used via work
     - Output: ESM only
     - Features: "use client" directive, external React, sourcemaps, declaration files
 
+#### Vitest (`@page-builder/config-vitest`)
+
+- `base.ts` - For utility libraries and Node.js packages
+    - **Use for**: `@page-builder/core-utils`, `@page-builder/api-types`
+    - Environment: Node.js
+    - Features: Global test APIs, coverage reporting
+- `react.ts` - For React component libraries
+    - **Use for**: `@page-builder/core-ui`
+    - Environment: jsdom (browser-like)
+    - Features: React plugin, global test APIs, CSS support, coverage reporting
+    - Requires: `vitest.setup.ts` file in package root
+
 ### When to Use Which Config
 
 **For utility/helper packages (utils, api-types):**
@@ -75,6 +87,11 @@ All shared configurations live in `packages/config/` and should be used via work
 // tsup.config.ts
 import baseConfig from "@page-builder/config-tsup/base";
 export default baseConfig;
+
+// vitest.config.ts
+import { defineConfig } from "vitest/config";
+import baseConfig from "@page-builder/config-vitest/base";
+export default defineConfig(baseConfig);
 ```
 
 **For React component libraries (ui):**
@@ -83,6 +100,19 @@ export default baseConfig;
 // tsup.config.ts
 import reactConfig from "@page-builder/config-tsup/react";
 export default reactConfig;
+
+// vitest.config.ts
+import { defineConfig, mergeConfig } from "vitest/config";
+import { reactConfig } from "@page-builder/config-vitest/react";
+export default mergeConfig(
+    reactConfig,
+    defineConfig({
+        // Add custom config here if needed
+    })
+);
+
+// vitest.setup.ts (required)
+import "@testing-library/jest-dom/vitest";
 ```
 
 **For apps (host-root, render-root):**
