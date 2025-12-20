@@ -8,7 +8,6 @@ export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
 
 export const Label = ({ className, disabled, ...props }: LabelProps) => {
     return (
-        // eslint-disable-next-line jsx-a11y/label-has-associated-control
         <label
             className={cn(String(formClasses.label), disabled && "cursor-not-allowed opacity-60", className)}
             {...props}
