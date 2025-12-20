@@ -20,6 +20,9 @@
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "type-check": "tsc --noEmit",
+        "test": "vitest",
+        "test:run": "vitest run",
+        "test:coverage": "vitest run --coverage",
         "clean": "rm -rf dist"
     },
     "dependencies": {
@@ -28,6 +31,7 @@
     "devDependencies": {
         "@page-builder/config-eslint": "workspace:*",
         "@page-builder/config-tsconfig": "workspace:*",
-        "@page-builder/config-tsup": "workspace:*"
+        "@page-builder/config-tsup": "workspace:*",
+        "@page-builder/config-vitest": "workspace:*"
     }
 }

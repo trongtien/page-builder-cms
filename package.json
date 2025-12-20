@@ -47,6 +47,7 @@
         "@typescript-eslint/eslint-plugin": "catalog:",
         "@typescript-eslint/parser": "catalog:",
         "@vitejs/plugin-react": "catalog:",
+        "@vitest/coverage-v8": "^4.0.16",
         "autoprefixer": "catalog:",
         "eslint": "catalog:",
         "eslint-config-prettier": "catalog:",
