@@ -29,6 +29,7 @@
         "@page-builder/core-ui": "workspace:*",
         "@page-builder/core-utils": "workspace:*",
         "react": "catalog:",
+        "uuid": "catalog:",
         "zod": "^3.23.8"
     },
     "devDependencies": {
@@ -36,6 +37,7 @@
         "@page-builder/config-tsconfig": "workspace:*",
         "@types/node": "catalog:",
         "@types/react": "catalog:",
+        "@types/uuid": "catalog:",
         "tsup": "catalog:",
         "typescript": "catalog:"
     },
