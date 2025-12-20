@@ -1,4 +1,4 @@
-import { useState, useCallback, memo } from "react";
+import { useState, useCallback, memo, useEffect } from "react";
 import {
     DndContext,
     DragOverlay,
@@ -247,6 +247,59 @@ export function PageBuilder({
 
     // Get selected widget
     const selectedWidget = selectedWidgetId ? widgets.find((w) => w.id === selectedWidgetId) || null : null;
+
+    // Keyboard shortcuts
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // Ignore if typing in an input/textarea
+            const target = e.target as HTMLElement;
+            if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable) {
+                return;
+            }
+
+            switch (e.key) {
+                case "Delete":
+                case "Backspace":
+                    // Delete selected widget
+                    if (selectedWidgetId) {
+                        e.preventDefault();
+                        handleWidgetRemove(selectedWidgetId);
+                    }
+                    break;
+
+                case "Escape":
+                    // Clear selection
+                    if (selectedWidgetId) {
+                        e.preventDefault();
+                        setSelectedWidgetId(null);
+                    }
+                    break;
+
+                case "Tab":
+                    // Navigate between widgets
+                    if (widgets.length > 0) {
+                        e.preventDefault();
+                        const currentIndex = selectedWidgetId
+                            ? widgets.findIndex((w) => w.id === selectedWidgetId)
+                            : -1;
+
+                        if (e.shiftKey) {
+                            // Navigate backwards
+                            const prevIndex = currentIndex <= 0 ? widgets.length - 1 : currentIndex - 1;
+                            setSelectedWidgetId(widgets[prevIndex].id);
+                        } else {
+                            // Navigate forwards
+                            const nextIndex = currentIndex >= widgets.length - 1 ? 0 : currentIndex + 1;
+                            setSelectedWidgetId(widgets[nextIndex].id);
+                        }
+                    }
+                    break;
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [selectedWidgetId, widgets, handleWidgetRemove]);
 
     if (readOnly) {
         // TODO: Implement read-only preview mode
