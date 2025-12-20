@@ -1,5 +1,15 @@
 import { useCallback, useReducer } from "react";
+import { ZodError } from "zod";
 import type { PageConfig, Widget } from "@page-builder/api-types";
+import { widgetSchema, pageConfigSchema } from "@page-builder/api-types";
+
+/**
+ * Validation error type
+ */
+export interface ValidationError {
+    field: string;
+    message: string;
+}
 
 /**
  * Editor state interface
@@ -17,6 +27,8 @@ export interface EditorState {
     isLoading: boolean;
     /** Error message if any */
     error: string | null;
+    /** Validation errors for widgets */
+    validationErrors: Map<string, ValidationError[]>;
 }
 
 /**
@@ -32,7 +44,39 @@ type EditorAction =
     | { type: "SET_LOADING"; payload: boolean }
     | { type: "SET_SAVING"; payload: boolean }
     | { type: "SET_ERROR"; payload: string | null }
+    | { type: "SET_VALIDATION_ERRORS"; payload: { widgetId: string; errors: ValidationError[] } }
+    | { type: "CLEAR_VALIDATION_ERRORS"; payload: string }
     | { type: "CLEAR_DIRTY" };
+
+/**
+ * Validate a widget against its schema
+ */
+function validateWidget(widget: Widget): ValidationError[] {
+    try {
+        widgetSchema.parse(widget);
+        return [];
+    } catch (error) {
+        if (error instanceof ZodError) {
+            return error.errors.map((err) => ({
+                field: err.path.join("."),
+                message: err.message
+            }));
+        }
+        return [{ field: "unknown", message: "Validation failed" }];
+    }
+}
+
+/**
+ * Validate entire page config
+ */
+function validatePage(page: PageConfig): boolean {
+    try {
+        pageConfigSchema.parse(page);
+        return true;
+    } catch {
+        return false;
+    }
+}
 
 /**
  * Recalculate widget positions to ensure no gaps
@@ -61,6 +105,19 @@ function editorReducer(state: EditorState, action: EditorAction): EditorState {
             if (!state.page) return state;
 
             const { widget, position } = action.payload;
+
+            // Validate widget before adding
+            const validationErrors = validateWidget(widget);
+            if (validationErrors.length > 0) {
+                const newValidationErrors = new Map(state.validationErrors);
+                newValidationErrors.set(widget.id, validationErrors);
+                return {
+                    ...state,
+                    error: "Widget validation failed",
+                    validationErrors: newValidationErrors
+                };
+            }
+
             const newWidgets = [...state.page.widgets];
 
             if (position !== undefined && position >= 0 && position <= newWidgets.length) {
@@ -69,13 +126,18 @@ function editorReducer(state: EditorState, action: EditorAction): EditorState {
                 newWidgets.push(widget);
             }
 
+            // Clear validation errors for this widget
+            const newValidationErrors = new Map(state.validationErrors);
+            newValidationErrors.delete(widget.id);
+
             return {
                 ...state,
                 page: {
                     ...state.page,
                     widgets: recalculatePositions(newWidgets)
                 },
-                isDirty: true
+                isDirty: true,
+                validationErrors: newValidationErrors
             };
         }
 
@@ -123,11 +185,13 @@ function editorReducer(state: EditorState, action: EditorAction): EditorState {
             if (!state.page) return state;
 
             const { widgetId, updates } = action.payload;
+            const newValidationErrors = new Map(state.validationErrors);
+
             const widgets = state.page.widgets.map((w) => {
                 if (w.id !== widgetId) return w;
 
                 // Type-safe merge: ensure the widget type remains consistent
-                return {
+                const updatedWidget = {
                     ...w,
                     ...updates,
                     // Preserve the widget type to maintain discriminated union
@@ -137,6 +201,16 @@ function editorReducer(state: EditorState, action: EditorAction): EditorState {
                     // Deep merge commonProps if provided
                     commonProps: updates.commonProps ? { ...w.commonProps, ...updates.commonProps } : w.commonProps
                 } as Widget;
+
+                // Validate updated widget
+                const validationErrors = validateWidget(updatedWidget);
+                if (validationErrors.length > 0) {
+                    newValidationErrors.set(widgetId, validationErrors);
+                } else {
+                    newValidationErrors.delete(widgetId);
+                }
+
+                return updatedWidget;
             });
 
             return {
@@ -145,7 +219,8 @@ function editorReducer(state: EditorState, action: EditorAction): EditorState {
                     ...state.page,
                     widgets
                 },
-                isDirty: true
+                isDirty: true,
+                validationErrors: newValidationErrors
             };
         }
 
@@ -172,6 +247,24 @@ function editorReducer(state: EditorState, action: EditorAction): EditorState {
                 ...state,
                 error: action.payload
             };
+
+        case "SET_VALIDATION_ERRORS": {
+            const newValidationErrors = new Map(state.validationErrors);
+            newValidationErrors.set(action.payload.widgetId, action.payload.errors);
+            return {
+                ...state,
+                validationErrors: newValidationErrors
+            };
+        }
+
+        case "CLEAR_VALIDATION_ERRORS": {
+            const newValidationErrors = new Map(state.validationErrors);
+            newValidationErrors.delete(action.payload);
+            return {
+                ...state,
+                validationErrors: newValidationErrors
+            };
+        }
 
         case "CLEAR_DIRTY":
             return {
@@ -239,7 +332,8 @@ export function usePageEditor(initialPage?: PageConfig): UsePageEditorReturn {
         isDirty: false,
         isSaving: false,
         isLoading: false,
-        error: null
+        error: null,
+        validationErrors: new Map()
     });
 
     const actions: EditorActions = {
@@ -266,6 +360,21 @@ export function usePageEditor(initialPage?: PageConfig): UsePageEditorReturn {
         savePage: useCallback(async () => {
             if (!state.page) {
                 dispatch({ type: "SET_ERROR", payload: "No page to save" });
+                return;
+            }
+
+            // Validate entire page before saving
+            if (!validatePage(state.page)) {
+                dispatch({ type: "SET_ERROR", payload: "Page validation failed. Please fix errors before saving." });
+                return;
+            }
+
+            // Check if any widgets have validation errors
+            if (state.validationErrors.size > 0) {
+                dispatch({
+                    type: "SET_ERROR",
+                    payload: `Cannot save: ${state.validationErrors.size} widget(s) have validation errors`
+                });
                 return;
             }
 
