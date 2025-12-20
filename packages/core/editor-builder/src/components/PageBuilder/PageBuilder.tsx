@@ -1,4 +1,4 @@
-import { useState, useCallback, memo, useEffect } from "react";
+import { useCallback, memo, useEffect, useState } from "react";
 import {
     DndContext,
     DragOverlay,
@@ -11,11 +11,12 @@ import {
     type DragEndEvent,
     type DragCancelEvent
 } from "@dnd-kit/core";
-import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import type { PageConfig, Widget, WidgetType } from "@page-builder/api-types";
 import { Canvas } from "./Canvas";
 import { WidgetPalette } from "./WidgetPalette";
 import { PropertyEditor } from "./PropertyEditor";
+import { usePageEditor } from "../../hooks/usePageEditor";
 import { v4 as uuidv4 } from "uuid";
 
 /**
@@ -133,9 +134,25 @@ export function PageBuilder({
     onCancel: _onCancel,
     readOnly = false
 }: PageBuilderProps) {
-    // Editor state
-    const [widgets, setWidgets] = useState<Widget[]>([]);
-    const [selectedWidgetId, setSelectedWidgetId] = useState<string | null>(null);
+    // Initialize empty page if not provided
+    const initialPage: PageConfig = {
+        id: _pageId || "new-page",
+        title: "Untitled Page",
+        slug: "untitled-page",
+        widgets: [],
+        metadata: {
+            status: "draft",
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            version: 1
+        }
+    };
+
+    // Use page editor hook for state management
+    const { page, selectedWidgetId, isDirty: _isDirty, actions } = usePageEditor(initialPage);
+    const widgets = page?.widgets || [];
+
+    // Track active widget type during drag
     const [activeWidgetType, setActiveWidgetType] = useState<WidgetType | null>(null);
 
     // Configure DnD sensors with optimized settings
@@ -166,44 +183,43 @@ export function PageBuilder({
     }, []);
 
     // Handle drag end
-    const handleDragEnd = useCallback((event: DragEndEvent) => {
-        const { active, over } = event;
+    const handleDragEnd = useCallback(
+        (event: DragEndEvent) => {
+            const { active, over } = event;
 
-        if (!over) {
-            setActiveWidgetType(null);
-            return;
-        }
+            if (!over) {
+                setActiveWidgetType(null);
+                return;
+            }
 
-        const activeData = active.data.current;
-        const overData = over.data.current;
+            const activeData = active.data.current;
+            const overData = over.data.current;
 
-        // Case 1: Dropping new widget from palette onto canvas
-        if (
-            activeData?.type === "new-widget" &&
-            overData?.type === "canvas" &&
-            typeof activeData.widgetType === "string"
-        ) {
-            const newWidget = createDefaultWidget(activeData.widgetType as WidgetType);
-            setWidgets((prev) => [...prev, newWidget]);
-            setSelectedWidgetId(newWidget.id);
-        }
+            // Case 1: Dropping new widget from palette onto canvas
+            if (
+                activeData?.type === "new-widget" &&
+                overData?.type === "canvas" &&
+                typeof activeData.widgetType === "string"
+            ) {
+                const newWidget = createDefaultWidget(activeData.widgetType as WidgetType);
+                actions.addWidget(newWidget);
+                actions.selectWidget(newWidget.id);
+            }
 
-        // Case 2: Reordering existing widgets in canvas
-        else if (activeData?.type === "canvas-widget" && active.id !== over.id) {
-            setWidgets((prev) => {
-                const oldIndex = prev.findIndex((w) => w.id === active.id);
-                const newIndex = prev.findIndex((w) => w.id === over.id);
+            // Case 2: Reordering existing widgets in canvas
+            else if (activeData?.type === "canvas-widget" && active.id !== over.id) {
+                const oldIndex = widgets.findIndex((w) => w.id === active.id);
+                const newIndex = widgets.findIndex((w) => w.id === over.id);
 
-                if (oldIndex === -1 || newIndex === -1) {
-                    return prev;
+                if (oldIndex !== -1 && newIndex !== -1) {
+                    actions.reorderWidget(active.id as string, newIndex);
                 }
+            }
 
-                return arrayMove(prev, oldIndex, newIndex);
-            });
-        }
-
-        setActiveWidgetType(null);
-    }, []);
+            setActiveWidgetType(null);
+        },
+        [actions, widgets]
+    );
 
     // Handle drag cancel
     const handleDragCancel = useCallback((_event: DragCancelEvent) => {
@@ -211,39 +227,28 @@ export function PageBuilder({
     }, []);
 
     // Handle widget selection
-    const handleWidgetSelect = useCallback((widgetId: string) => {
-        setSelectedWidgetId(widgetId);
-    }, []);
+    const handleWidgetSelect = useCallback(
+        (widgetId: string) => {
+            actions.selectWidget(widgetId);
+        },
+        [actions]
+    );
 
     // Handle widget removal
     const handleWidgetRemove = useCallback(
         (widgetId: string) => {
-            setWidgets((prev) => prev.filter((w) => w.id !== widgetId));
-            if (selectedWidgetId === widgetId) {
-                setSelectedWidgetId(null);
-            }
+            actions.removeWidget(widgetId);
         },
-        [selectedWidgetId]
+        [actions]
     );
 
     // Handle property changes
-    const handlePropertyChange = useCallback((widgetId: string, updates: Partial<Widget>) => {
-        setWidgets((prev) =>
-            prev.map((w) => {
-                if (w.id !== widgetId) return w;
-
-                // Merge updates carefully to maintain type safety
-                return {
-                    ...w,
-                    ...updates,
-                    // Ensure props are merged properly
-                    props: updates.props ? { ...w.props, ...updates.props } : w.props,
-                    // Ensure commonProps are merged properly
-                    commonProps: updates.commonProps ? { ...w.commonProps, ...updates.commonProps } : w.commonProps
-                } as Widget;
-            })
-        );
-    }, []);
+    const handlePropertyChange = useCallback(
+        (widgetId: string, updates: Partial<Widget>) => {
+            actions.updateWidget(widgetId, updates);
+        },
+        [actions]
+    );
 
     // Get selected widget
     const selectedWidget = selectedWidgetId ? widgets.find((w) => w.id === selectedWidgetId) || null : null;
@@ -263,7 +268,7 @@ export function PageBuilder({
                     // Delete selected widget
                     if (selectedWidgetId) {
                         e.preventDefault();
-                        handleWidgetRemove(selectedWidgetId);
+                        actions.removeWidget(selectedWidgetId);
                     }
                     break;
 
@@ -271,7 +276,7 @@ export function PageBuilder({
                     // Clear selection
                     if (selectedWidgetId) {
                         e.preventDefault();
-                        setSelectedWidgetId(null);
+                        actions.selectWidget(null);
                     }
                     break;
 
@@ -286,11 +291,11 @@ export function PageBuilder({
                         if (e.shiftKey) {
                             // Navigate backwards
                             const prevIndex = currentIndex <= 0 ? widgets.length - 1 : currentIndex - 1;
-                            setSelectedWidgetId(widgets[prevIndex].id);
+                            actions.selectWidget(widgets[prevIndex].id);
                         } else {
                             // Navigate forwards
                             const nextIndex = currentIndex >= widgets.length - 1 ? 0 : currentIndex + 1;
-                            setSelectedWidgetId(widgets[nextIndex].id);
+                            actions.selectWidget(widgets[nextIndex].id);
                         }
                     }
                     break;
@@ -299,7 +304,7 @@ export function PageBuilder({
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [selectedWidgetId, widgets, handleWidgetRemove]);
+    }, [selectedWidgetId, widgets, actions]);
 
     if (readOnly) {
         // TODO: Implement read-only preview mode
@@ -334,7 +339,7 @@ export function PageBuilder({
                     <MemoizedPropertyEditor
                         widget={selectedWidget}
                         onPropertyChange={handlePropertyChange}
-                        onClose={() => setSelectedWidgetId(null)}
+                        onClose={() => actions.selectWidget(null)}
                     />
                 )}
             </div>
