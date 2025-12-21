@@ -4,6 +4,8 @@ export { Badge, badgeVariants, type BadgeProps } from "./Badge";
 export { Loading, Spinner, type LoadingProps, type SpinnerProps } from "./Loading";
 export { Input, type InputProps } from "./Input";
 export { Select, type SelectProps, type SelectOption } from "./Select";
+export { RadioGroup, type RadioGroupProps } from "./RadioGroup";
+export { RadioItem, type RadioItemProps } from "./RadioItem";
 export { Radio, type RadioProps } from "./Radio";
 export { Checkbox, type CheckboxProps } from "./Checkbox";
 export { Textarea, type TextareaProps } from "./Textarea";

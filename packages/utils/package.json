@@ -1,0 +1,37 @@
+{
+    "name": "@page-builder/core-utils",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Shared utility functions",
+    "type": "module",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        }
+    },
+    "scripts": {
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "type-check": "tsc --noEmit",
+        "test": "vitest",
+        "test:run": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "clean": "rm -rf dist"
+    },
+    "dependencies": {
+        "dayjs": "catalog:"
+    },
+    "devDependencies": {
+        "@page-builder/config-eslint": "workspace:*",
+        "@page-builder/config-tsconfig": "workspace:*",
+        "@page-builder/config-tsup": "workspace:*",
+        "@page-builder/config-vitest": "workspace:*"
+    }
+}

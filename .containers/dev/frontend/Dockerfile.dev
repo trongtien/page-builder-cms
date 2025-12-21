@@ -1,0 +1,28 @@
+# Development Dockerfile for Frontend Apps
+FROM node:18-alpine
+
+# Install pnpm globally
+RUN npm install -g pnpm@latest
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files for dependency installation
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY turbo.json ./
+
+# Copy all package.json files from workspace
+COPY packages/ ./packages/
+COPY apps/ ./apps/
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Source code will be mounted as volume in docker-compose
+# This allows for hot-reload functionality
+
+# Expose port for dev server (will be overridden by docker-compose)
+EXPOSE 3000
+
+# Start development server (command will be overridden in docker-compose)
+CMD ["pnpm", "dev"]

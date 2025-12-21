@@ -2,12 +2,13 @@ import { forwardRef, useId, type InputHTMLAttributes } from "react";
 import { cn } from "../lib/utils";
 import { formClasses } from "../lib/formClass";
 import { Label } from "./Label";
-import { Message } from "./Message";
-import { HelperText } from "./HelperText";
-import type { BaseFieldProps } from "../types/field.type";
+import { FieldWrapper } from "./FieldWrapper";
 
-export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type">, Omit<BaseFieldProps, "label"> {
-    label: string;
+export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+    label?: string;
+    helperText?: string;
+    error?: string;
+    wrapperClassName?: string;
 }
 
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(
@@ -16,38 +17,38 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
         const inputId = id || generatedId;
 
         return (
-            <div className={cn("w-full", wrapperClassName)}>
+            <FieldWrapper
+                inputId={inputId}
+                label={label}
+                helperText={helperText}
+                error={error}
+                wrapperClassName={wrapperClassName}
+            >
                 <div className="flex items-start">
                     <div className="flex items-center h-5">
                         <input
                             {...props}
+                            ref={ref}
                             type="radio"
                             id={inputId}
-                            ref={ref}
                             disabled={disabled}
                             className={cn(
-                                String(formClasses.radio),
+                                formClasses.radio,
                                 error && "ring-red-500 focus:ring-red-500",
                                 disabled && "cursor-not-allowed opacity-60",
                                 className
                             )}
-                            aria-describedby={error ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined}
                         />
                     </div>
-                    <div className="ml-3">
-                        <Label htmlFor={inputId} disabled={disabled}>
-                            {label}
-                        </Label>
-                        {helperText && !error && (
-                            <HelperText id={`${inputId}-helper`} className="mt-0">
-                                {helperText}
-                            </HelperText>
-                        )}
-                    </div>
+                    {label && (
+                        <div className="ml-3">
+                            <Label htmlFor={inputId} disabled={disabled} className="text-sm font-normal">
+                                {label}
+                            </Label>
+                        </div>
+                    )}
                 </div>
-
-                {error && <Message id={`${inputId}-error`}>{error}</Message>}
-            </div>
+            </FieldWrapper>
         );
     }
 );

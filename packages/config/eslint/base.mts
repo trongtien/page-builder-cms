@@ -87,6 +87,7 @@ const config: ReturnType<typeof tseslint.config> = tseslint.config(
             // Disable slow rules for performance
             "@typescript-eslint/no-floating-promises": "off",
             "@typescript-eslint/no-misused-promises": "off",
+            "@typescript-eslint/no-unnecessary-type-constraint": "off",
 
             // Prettier integration
             "prettier/prettier": [
