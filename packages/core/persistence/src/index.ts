@@ -35,6 +35,18 @@ export { checkDatabaseHealth, isDatabaseReady, waitForDatabase, type HealthCheck
 // Export configuration utilities
 export { loadConfig, validateConfig, type DatabaseConfig } from "./postgres/config";
 
+// Export logger utilities
+export {
+    logger,
+    createChildLogger,
+    persistenceLogger,
+    logQuery,
+    logTransaction,
+    logConnection,
+    getLogLevel,
+    type LoggerOptions
+} from "./logger";
+
 // Re-export Prisma Client types for convenience
 export { PrismaClient, Prisma } from "./generated/client";
 

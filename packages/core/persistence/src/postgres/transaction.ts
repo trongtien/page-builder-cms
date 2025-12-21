@@ -18,6 +18,7 @@
 
 import type { PrismaClient } from "../generated/client";
 import { prisma } from "./client";
+import { persistenceLogger } from "../logger";
 
 /**
  * Callback function type for transaction operations
@@ -40,10 +41,11 @@ export async function withTransaction<T>(callback: TransactionCallback<T>): Prom
             return callback(tx as PrismaClient);
         });
     } catch (error) {
-        // Log error for debugging (use proper logger in production)
-        if (process.env.NODE_ENV === "development") {
-            console.error("Transaction failed:", error);
-        }
+        // Log error for debugging
+        persistenceLogger.transaction("rollback", {
+            error: error instanceof Error ? error.message : "Unknown error",
+            stack: error instanceof Error ? error.stack : undefined
+        });
 
         // Re-throw to allow caller to handle
         throw error;
@@ -70,9 +72,11 @@ export async function withTransactionTimeout<T>(callback: TransactionCallback<T>
         );
     } catch (error) {
         // Log error for debugging
-        if (process.env.NODE_ENV === "development") {
-            console.error("Transaction failed:", error);
-        }
+        persistenceLogger.transaction("rollback", {
+            error: error instanceof Error ? error.message : "Unknown error",
+            stack: error instanceof Error ? error.stack : undefined,
+            timeout
+        });
 
         throw error;
     }

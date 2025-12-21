@@ -12,6 +12,7 @@
  */
 
 import { PrismaClient } from "../generated/client";
+import { persistenceLogger } from "../logger";
 
 let prismaInstance: PrismaClient | null = null;
 
@@ -29,7 +30,7 @@ export function getPrismaClient(): PrismaClient {
             if (prismaInstance) {
                 await prismaInstance.$disconnect();
                 prismaInstance = null;
-                console.log("Database connection closed");
+                persistenceLogger.connection("disconnect", { reason: "graceful-shutdown" });
             }
         };
 

@@ -35,7 +35,8 @@
         "prisma:format": "prisma format"
     },
     "dependencies": {
-        "@prisma/client": "^7.0.1"
+        "@prisma/client": "^7.0.1",
+        "winston": "^3.17.0"
     },
     "devDependencies": {
         "@page-builder/config-eslint": "workspace:*",

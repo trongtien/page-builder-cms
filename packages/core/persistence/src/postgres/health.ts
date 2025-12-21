@@ -16,6 +16,7 @@
  */
 
 import { prisma } from "./client";
+import { persistenceLogger } from "../logger";
 
 export interface HealthCheckResult {
     /** Health status of the database connection */
@@ -93,17 +94,28 @@ export async function waitForDatabase(maxRetries = 5, delayMs = 2000): Promise<b
 
         if (isReady) {
             if (attempt > 1) {
-                console.log(`Database connection established after ${attempt} attempts`);
+                persistenceLogger.connection("connect", {
+                    attempts: attempt,
+                    message: "Database connection established"
+                });
             }
             return true;
         }
 
         if (attempt < maxRetries) {
-            console.log(`Database not ready (attempt ${attempt}/${maxRetries}), retrying in ${delayMs}ms...`);
+            persistenceLogger.connection("retry", {
+                attempt,
+                maxRetries,
+                delayMs,
+                message: "Database not ready, retrying"
+            });
             await new Promise((resolve) => setTimeout(resolve, delayMs));
         }
     }
 
-    console.error(`Database connection failed after ${maxRetries} attempts`);
+    persistenceLogger.connection("error", {
+        attempts: maxRetries,
+        message: "Database connection failed after max retries"
+    });
     return false;
 }
