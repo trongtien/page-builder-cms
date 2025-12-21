@@ -24,7 +24,13 @@
         "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
         "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
         "clean": "turbo run clean && rm -rf node_modules",
-        "prepare": "husky"
+        "prepare": "husky",
+        "docker:dev:up": "cd .containers/dev && docker-compose up -d",
+        "docker:dev:down": "cd .containers/dev && docker-compose down",
+        "docker:dev:logs": "cd .containers/dev && docker-compose logs -f",
+        "docker:dev:clean": "cd .containers/dev && docker-compose down -v",
+        "docker:dev:build": "cd .containers/dev && docker-compose build",
+        "docker:dev:restart": "cd .containers/dev && docker-compose restart"
     },
     "dependencies": {
         "lucide-react": "^0.460.0",

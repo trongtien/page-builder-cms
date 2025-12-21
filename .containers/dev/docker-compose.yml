@@ -1,0 +1,102 @@
+version: "3.9"
+
+services:
+    # PostgreSQL Database
+    database:
+        build:
+            context: ../../
+            dockerfile: .containers/dev/database/Dockerfile
+        container_name: pagebuilder-db
+        environment:
+            POSTGRES_DB: pagebuilder
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+            POSTGRES_HOST_AUTH_METHOD: trust
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+            - ./database/init:/docker-entrypoint-initdb.d
+        ports:
+            - "5432:5432"
+        networks:
+            - pagebuilder-network
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    # Host Root Frontend
+    host-root:
+        build:
+            context: ../../
+            dockerfile: .containers/dev/frontend/Dockerfile.dev
+        container_name: pagebuilder-host-root
+        working_dir: /app/apps/host-root
+        command: pnpm dev --host 0.0.0.0
+        environment:
+            - NODE_ENV=development
+            - VITE_DB_HOST=database
+            - VITE_DB_PORT=5432
+            - VITE_DB_NAME=pagebuilder
+            - VITE_DB_USER=postgres
+            - VITE_DB_PASSWORD=${DB_PASSWORD:-postgres}
+        volumes:
+            - ../../:/app
+            - /app/node_modules
+            - /app/apps/host-root/node_modules
+            - /app/apps/render-root/node_modules
+            - /app/packages/config/node_modules
+            - /app/packages/core/ui/node_modules
+            - /app/packages/core/api-types/node_modules
+            - /app/packages/utils/node_modules
+        ports:
+            - "3000:3000"
+        networks:
+            - pagebuilder-network
+        depends_on:
+            database:
+                condition: service_healthy
+        stdin_open: true
+        tty: true
+
+    # Render Root Frontend
+    render-root:
+        build:
+            context: ../../
+            dockerfile: .containers/dev/frontend/Dockerfile.dev
+        container_name: pagebuilder-render-root
+        working_dir: /app/apps/render-root
+        command: pnpm dev --host 0.0.0.0 --port 3001
+        environment:
+            - NODE_ENV=development
+            - VITE_DB_HOST=database
+            - VITE_DB_PORT=5432
+            - VITE_DB_NAME=pagebuilder
+            - VITE_DB_USER=postgres
+            - VITE_DB_PASSWORD=${DB_PASSWORD:-postgres}
+        volumes:
+            - ../../:/app
+            - /app/node_modules
+            - /app/apps/host-root/node_modules
+            - /app/apps/render-root/node_modules
+            - /app/packages/config/node_modules
+            - /app/packages/core/ui/node_modules
+            - /app/packages/core/api-types/node_modules
+            - /app/packages/utils/node_modules
+        ports:
+            - "3001:3001"
+        networks:
+            - pagebuilder-network
+        depends_on:
+            database:
+                condition: service_healthy
+        stdin_open: true
+        tty: true
+
+networks:
+    pagebuilder-network:
+        driver: bridge
+
+volumes:
+    pgdata:
+        driver: local

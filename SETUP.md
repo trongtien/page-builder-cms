@@ -1,5 +1,79 @@
 # Setup Instructions
 
+## Docker Development Setup (Recommended)
+
+### Prerequisites
+
+- **Docker Desktop 24.0+** - [Download here](https://www.docker.com/products/docker-desktop/)
+- **Docker Compose v2** (included with Docker Desktop)
+- **8GB RAM minimum** (16GB recommended)
+- **20GB free disk space**
+
+### Quick Start with Docker
+
+The easiest way to get started is using Docker:
+
+```powershell
+# Start all services (database, host-root, render-root)
+pnpm docker:dev:up
+
+# View logs
+pnpm docker:dev:logs
+
+# Stop all services
+pnpm docker:dev:down
+
+# Clean up (removes volumes - fresh start)
+pnpm docker:dev:clean
+```
+
+**Access the applications:**
+
+- Host Root: http://localhost:3000
+- Render Root: http://localhost:3001
+- PostgreSQL: localhost:5432 (user: postgres, password: postgres)
+
+**Features:**
+
+- ✅ Hot-reload for both frontends
+- ✅ PostgreSQL 18 database with sample data
+- ✅ All dependencies pre-installed in containers
+- ✅ Automatic database initialization
+- ✅ Isolated development environment
+
+### Docker Commands
+
+| Command                   | Description                               |
+| ------------------------- | ----------------------------------------- |
+| `pnpm docker:dev:up`      | Start all services in background          |
+| `pnpm docker:dev:down`    | Stop all services                         |
+| `pnpm docker:dev:logs`    | Follow logs from all services             |
+| `pnpm docker:dev:clean`   | Stop and remove all volumes (fresh start) |
+| `pnpm docker:dev:build`   | Rebuild Docker images                     |
+| `pnpm docker:dev:restart` | Restart all services                      |
+
+### Troubleshooting Docker
+
+**Port Already in Use:**
+
+```powershell
+# Stop containers using the ports
+npx kill-port 3000 3001 5432
+# Or change ports in .containers/dev/docker-compose.yml
+```
+
+**Hot Reload Not Working on Windows:**
+
+- Ensure Docker Desktop has access to your drive
+- If using WSL2, run from WSL2 terminal
+- Files must be in a location Docker can access
+
+**Database Connection Issues:**
+
+- Wait for database health check to pass (~30 seconds)
+- Check logs: `pnpm docker:dev:logs database`
+- Connect manually: `docker exec -it pagebuilder-db psql -U postgres -d pagebuilder`
+
 ## What Has Been Created
 
 ### ✅ Turborepo Monorepo Structure
