@@ -1,0 +1,35 @@
+{
+    "name": "@page-builder/configurations",
+    "version": "0.0.1",
+    "private": true,
+    "description": "Configuration management with environment file loading support",
+    "type": "module",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
+    },
+    "scripts": {
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "type-check": "tsc --noEmit",
+        "clean": "rm -rf dist",
+        "test": "vitest",
+        "test:coverage": "vitest --coverage"
+    },
+    "dependencies": {
+        "dotenv": "^16.4.5"
+    },
+    "devDependencies": {
+        "@page-builder/config-eslint": "workspace:*",
+        "@page-builder/config-tsconfig": "workspace:*",
+        "@page-builder/config-tsup": "workspace:*",
+        "@page-builder/config-vitest": "workspace:*"
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "extends": "@page-builder/config-tsconfig/base.json",
+    "compilerOptions": {
+        "outDir": "dist",
+        "rootDir": "src",
+        "strict": true,
+        "declaration": true,
+        "declarationMap": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "moduleResolution": "bundler",
+        "module": "ESNext",
+        "target": "ES2022",
+        "types": ["vitest/globals"]
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

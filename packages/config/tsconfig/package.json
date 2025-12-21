@@ -7,5 +7,10 @@
         "base.json",
         "react.json",
         "node.json"
-    ]
+    ],
+    "exports": {
+        "./base.json": "./base.json",
+        "./react.json": "./react.json",
+        "./node.json": "./node.json"
+    }
 }
