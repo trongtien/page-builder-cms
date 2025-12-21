@@ -1,0 +1,6 @@
+# Prisma Generated Client
+/client/
+/client
+
+# Keep this file to track the directory exists
+!.gitkeep
