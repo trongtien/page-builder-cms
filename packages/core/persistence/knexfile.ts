@@ -1,5 +1,5 @@
 import type { Knex } from "knex";
-import { knexConfig } from "../src/postgres/config";
+import { knexConfig } from "./src/postgres/config";
 
 /**
  * Knex configuration file
