@@ -108,9 +108,9 @@ describe("Pipeline functions", () => {
 
         it("should use multi() for transaction", async () => {
             const mockClient = createMockClient();
-            const mockRedis = mockClient.getClient();
-            const mockMulti = vi.fn(() => createMockPipeline());
-            vi.mocked(mockRedis).multi = mockMulti;
+            const mockRedis = mockClient.getClient() as any;
+            const mockMulti = vi.fn(() => createMockPipeline()) as any;
+            mockRedis.multi = mockMulti;
 
             await executeTransaction(mockClient, (pipeline: any) => {
                 pipeline.set("key", "value");
@@ -149,8 +149,8 @@ describe("Pipeline functions", () => {
             const mockClient = createMockClient();
             const mockPipeline = createMockPipeline();
             mockPipeline.exec.mockResolvedValue(null);
-            const mockRedis = mockClient.getClient();
-            vi.mocked(mockRedis).multi = vi.fn(() => mockPipeline as any);
+            const mockRedis = mockClient.getClient() as any;
+            mockRedis.multi = vi.fn(() => mockPipeline) as any;
 
             const results = await executeTransaction(mockClient, () => {});
 
