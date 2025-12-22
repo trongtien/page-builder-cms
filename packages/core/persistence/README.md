@@ -1,16 +1,19 @@
 # @page-builder/persistence
 
-Database persistence layer with Prisma and PostgreSQL connection pooling for the page-builder monorepo.
+Database persistence layer with Knex.js and PostgreSQL for the page-builder monorepo.
 
 ## Features
 
-- ✅ **Prisma 7.2** - Latest Prisma ORM with type-safe database access
-- ✅ **PostgreSQL** - Optimized for PostgreSQL 14+
+- ✅ **Knex.js 3.1** - Flexible SQL query builder with type safety
+- ✅ **PostgreSQL 8.13** - Optimized for PostgreSQL 14+
+- ✅ **BaseQuery Pattern** - OOP-based CRUD abstraction with pagination
 - ✅ **Connection Pooling** - Automatic connection management and pooling
 - ✅ **Transaction Helpers** - Convenient wrappers for atomic operations
-- ✅ **Health Checks** - Database connectivity monitoring
+- ✅ **Health Checks** - Database connectivity monitoring with retry logic
+- ✅ **Soft Delete Support** - Built-in soft delete functionality
+- ✅ **Winston Logger** - Comprehensive query and connection logging
 - ✅ **Environment Config** - Easy configuration via environment variables
-- ✅ **Type Safety** - Full TypeScript support with generated types
+- ✅ **Type Safety** - Full TypeScript support with strict mode
 - ✅ **Graceful Shutdown** - Automatic cleanup on process termination
 
 ## Installation

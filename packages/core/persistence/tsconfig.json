@@ -2,8 +2,8 @@
     "extends": "../../config/tsconfig/node.json",
     "compilerOptions": {
         "outDir": "dist",
-        "rootDir": "src"
+        "rootDir": "."
     },
-    "include": ["src", "prisma"],
-    "exclude": ["node_modules", "dist", "src/generated"]
+    "include": ["src", "knexfile.ts", "migrations", "seeds"],
+    "exclude": ["node_modules", "dist"]
 }

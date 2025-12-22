@@ -1,6 +1,32 @@
-export { prisma, getPrismaClient } from "./postgres/client";
-export { withTransaction, withTransactionTimeout, type TransactionCallback } from "./postgres/transaction";
-export { checkDatabaseHealth, isDatabaseReady, waitForDatabase, type HealthCheckResult } from "./postgres/health";
+export { DatabaseClient, getDatabaseClient, getKnex, db } from "./postgres/client";
+export { DatabaseConfigBuilder, createDatabaseConfig, knexConfig } from "./postgres/config";
+export { BaseQuery } from "./postgres/base-query";
+export {
+    TransactionManager,
+    withTransaction,
+    withTransactionTimeout,
+    transactionManager
+} from "./postgres/transaction";
+export {
+    DatabaseHealthMonitor,
+    checkDatabaseHealth,
+    isDatabaseReady,
+    waitForDatabase,
+    healthMonitor
+} from "./postgres/health";
+export type {
+    DatabaseConfig,
+    KnexConfigOptions,
+    HealthCheckResult,
+    TransactionCallback,
+    PaginationOptions,
+    PaginationResult,
+    QueryOptions,
+    WhereCondition,
+    InsertData,
+    UpdateData,
+    BaseModel
+} from "./postgres/postgres.type";
 export {
     logger,
     createChildLogger,
@@ -9,7 +35,8 @@ export {
     logTransaction,
     logConnection,
     getLogLevel,
-    type LoggerOptions
+    createLoggerConfig,
+    LoggerConfigBuilder
 } from "./logger";
-export { PrismaClient, Prisma } from "./generated/client";
-export type * from "./generated/client";
+export type { LoggerOptions, LoggerConfigOptions } from "./logger";
+export type { Knex } from "knex";

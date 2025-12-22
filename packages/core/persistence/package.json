@@ -2,7 +2,7 @@
     "name": "@page-builder/persistence",
     "version": "0.0.1",
     "private": true,
-    "description": "Database persistence layer with Prisma and PostgreSQL connection pooling",
+    "description": "Database persistence layer with Knex.js and PostgreSQL connection pooling",
     "type": "module",
     "main": "./dist/index.js",
     "module": "./dist/index.js",
@@ -18,8 +18,8 @@
         }
     },
     "scripts": {
-        "build": "pnpm prisma:generate && tsup",
-        "dev": "pnpm prisma:generate && tsup --watch",
+        "build": "tsup",
+        "dev": "tsup --watch",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "type-check": "tsc --noEmit",
@@ -27,15 +27,14 @@
         "test:run": "vitest run",
         "test:coverage": "vitest run --coverage",
         "clean": "rm -rf dist",
-        "prisma:generate": "prisma generate",
-        "prisma:migrate:dev": "prisma migrate dev",
-        "prisma:migrate:deploy": "prisma migrate deploy",
-        "prisma:migrate:reset": "prisma migrate reset",
-        "prisma:studio": "prisma studio",
-        "prisma:format": "prisma format"
+        "migrate:latest": "knex migrate:latest",
+        "migrate:rollback": "knex migrate:rollback",
+        "migrate:make": "knex migrate:make",
+        "seed:run": "knex seed:run"
     },
     "dependencies": {
-        "@prisma/client": "^7.0.1",
+        "knex": "^3.1.0",
+        "pg": "^8.16.3",
         "winston": "^3.17.0"
     },
     "devDependencies": {
@@ -43,6 +42,6 @@
         "@page-builder/config-tsconfig": "workspace:*",
         "@page-builder/config-tsup": "workspace:*",
         "@page-builder/config-vitest": "workspace:*",
-        "prisma": "^7.0.1"
+        "@types/pg": "^8.16.0"
     }
 }
