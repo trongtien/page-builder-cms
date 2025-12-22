@@ -1,102 +1,124 @@
-/**
- * Logger Configuration
- *
- * Defines Winston logger configuration with environment-based settings
- * Provides structured logging with appropriate formats for development and production
- */
-
 import type { LoggerOptions } from "winston";
 import * as winston from "winston";
+import type { LoggerConfigOptions } from "./logger.type";
+import { FormatMessageLogUtils } from "./format-message";
 
-const { combine, timestamp, errors, json, printf, colorize } = winston.format;
+export class LoggerConfigBuilder {
+    private static instance: LoggerConfigBuilder;
+    private formatUtils: FormatMessageLogUtils;
 
-/**
- * Custom format for development logs
- * Provides human-readable colored output with timestamps
- */
-const devFormat = combine(
-    colorize(),
-    timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-    errors({ stack: true }),
-    printf(({ timestamp, level, message, stack, ...meta }) => {
-        let log = `${String(timestamp)} [${String(level)}]: ${String(message)}`;
+    private serviceName: string;
+    private defaultMeta: Record<string, unknown>;
+    private level: string;
+    private _enableFileLogging: boolean;
+    private logDir: string;
 
-        // Add metadata if present
-        if (Object.keys(meta).length > 0) {
-            log += ` ${JSON.stringify(meta)}`;
-        }
-
-        // Add stack trace for errors
-        if (stack && typeof stack === "string") {
-            log += `\n${stack}`;
-        }
-
-        return log;
-    })
-);
-
-/**
- * Production format
- * JSON structured logging for log aggregation and analysis
- */
-const prodFormat = combine(timestamp(), errors({ stack: true }), json());
-
-/**
- * Log levels based on environment
- */
-export const getLogLevel = (): string => {
-    if (process.env.LOG_LEVEL) {
-        return process.env.LOG_LEVEL;
+    constructor(options: LoggerConfigOptions = {}) {
+        this.formatUtils = FormatMessageLogUtils.getInstance();
+        this.serviceName = options.serviceName || "@page-builder/persistence";
+        this.defaultMeta = options.defaultMeta || {};
+        this.level = options.level || this.getLogLevel();
+        this._enableFileLogging = options.enableFileLogging ?? process.env.LOG_TO_FILE === "true";
+        this.logDir = options.logDir || process.env.LOG_DIR || "./logs";
     }
 
-    return process.env.NODE_ENV === "production" ? "info" : "debug";
-};
+    public static getInstance(): LoggerConfigBuilder {
+        if (!LoggerConfigBuilder.instance) {
+            LoggerConfigBuilder.instance = new LoggerConfigBuilder();
+        }
+        return LoggerConfigBuilder.instance;
+    }
 
-/**
- * Winston logger configuration
- * Automatically adjusts format and transports based on environment
- */
-export const loggerConfig: LoggerOptions = {
-    level: getLogLevel(),
-    format: process.env.NODE_ENV === "production" ? prodFormat : devFormat,
-    defaultMeta: {
-        service: "@page-builder/persistence",
-        environment: process.env.NODE_ENV || "development"
-    },
-    transports: [
-        // Console transport for all environments
-        new winston.transports.Console({
-            handleExceptions: true,
-            handleRejections: true
-        })
-    ],
-    // Exit on unhandled exceptions and rejections
-    exitOnError: false
-};
+    private getLogLevel(): string {
+        if (process.env.LOG_LEVEL) {
+            return process.env.LOG_LEVEL;
+        }
+        return process.env.NODE_ENV === "production" ? "info" : "debug";
+    }
 
-/**
- * Add file transports for production
- * Logs errors to separate file for easier troubleshooting
- */
-if (process.env.NODE_ENV === "production" && process.env.LOG_TO_FILE === "true") {
-    const logDir = process.env.LOG_DIR || "./logs";
+    public setServiceName(serviceName: string): this {
+        this.serviceName = serviceName;
+        return this;
+    }
 
-    // Ensure transports is an array before pushing
-    if (Array.isArray(loggerConfig.transports)) {
-        loggerConfig.transports.push(
-            // Error logs
-            new winston.transports.File({
-                filename: `${logDir}/error.log`,
-                level: "error",
-                maxsize: 5242880, // 5MB
-                maxFiles: 5
-            }),
-            // Combined logs
-            new winston.transports.File({
-                filename: `${logDir}/combined.log`,
-                maxsize: 5242880, // 5MB
-                maxFiles: 5
+    public setLevel(level: string): this {
+        this.level = level;
+        return this;
+    }
+
+    public addDefaultMeta(meta: Record<string, unknown>): this {
+        this.defaultMeta = { ...this.defaultMeta, ...meta };
+        return this;
+    }
+
+    public setDefaultMeta(meta: Record<string, unknown>): this {
+        this.defaultMeta = meta;
+        return this;
+    }
+
+    public enableFileLogging(enable = true): this {
+        this._enableFileLogging = enable;
+        return this;
+    }
+
+    public setLogDir(dir: string): this {
+        this.logDir = dir;
+        return this;
+    }
+
+    private buildTransports(): winston.transport[] {
+        const transports: winston.transport[] = [
+            // Console transport for all environments
+            new winston.transports.Console({
+                handleExceptions: true,
+                handleRejections: true
             })
-        );
+        ];
+
+        // Add file transports for production if enabled
+        if (process.env.NODE_ENV === "production" && this._enableFileLogging) {
+            transports.push(
+                new winston.transports.File({
+                    filename: `${this.logDir}/error.log`,
+                    level: "error",
+                    maxsize: 5242880,
+                    maxFiles: 5
+                }),
+                new winston.transports.File({
+                    filename: `${this.logDir}/combined.log`,
+                    maxsize: 5242880,
+                    maxFiles: 5
+                })
+            );
+        }
+
+        return transports;
+    }
+
+    public build(): LoggerOptions {
+        return {
+            level: this.level,
+            format: this.formatUtils.getConfigFormatMessage(),
+            defaultMeta: {
+                service: this.serviceName,
+                environment: process.env.NODE_ENV || "development",
+                ...this.defaultMeta
+            },
+            transports: this.buildTransports(),
+            exitOnError: false
+        };
+    }
+
+    public static getLogLevel(): string {
+        if (process.env.LOG_LEVEL) {
+            return process.env.LOG_LEVEL;
+        }
+        return process.env.NODE_ENV === "production" ? "info" : "debug";
     }
 }
+
+export function createLoggerConfig(options: LoggerConfigOptions = {}): LoggerOptions {
+    return new LoggerConfigBuilder(options).build();
+}
+export const getLogLevel = () => LoggerConfigBuilder.getLogLevel();
+export const loggerConfig: LoggerOptions = new LoggerConfigBuilder().build();
