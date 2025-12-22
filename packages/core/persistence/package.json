@@ -2,7 +2,7 @@
     "name": "@page-builder/persistence",
     "version": "0.0.1",
     "private": true,
-    "description": "Database persistence layer with Knex.js and PostgreSQL connection pooling",
+    "description": "Database persistence layer with PostgreSQL and Redis connection management",
     "type": "module",
     "main": "./dist/index.js",
     "module": "./dist/index.js",
@@ -15,6 +15,10 @@
         "./postgres": {
             "types": "./dist/postgres/client.d.ts",
             "import": "./dist/postgres/client.js"
+        },
+        "./redis": {
+            "types": "./dist/redis/index.d.ts",
+            "import": "./dist/redis/index.js"
         }
     },
     "scripts": {
@@ -33,6 +37,7 @@
         "seed:run": "knex seed:run"
     },
     "dependencies": {
+        "ioredis": "^5.3.2",
         "knex": "^3.1.0",
         "pg": "^8.16.3",
         "winston": "^3.17.0"

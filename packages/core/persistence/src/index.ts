@@ -29,6 +29,15 @@ export type {
     UpdateData,
     BaseModel
 } from "./postgres/postgres.type";
+
+// Redis exports
+export { RedisClient } from "./redis/client";
+export { RedisConfigBuilder } from "./redis/config";
+export { checkRedisHealth } from "./redis/health";
+export { executePipeline, executeTransaction } from "./redis/pipeline";
+export type { RedisConfig, RedisConfigOptions, RedisHealthStatus, IORedisConfig } from "./redis/redis.type";
+
+// Logger exports
 export {
     logger,
     createChildLogger,
