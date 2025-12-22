@@ -23,6 +23,16 @@ export interface KnexConfigOptions {
     seedsDir?: string;
 }
 
+export interface KnexFileConfigOptions {
+    migrationsDir?: string;
+    seedsDir?: string;
+    migrationsTableName?: string;
+    developmentPool?: { min?: number; max?: number };
+    stagingPool?: { min?: number; max?: number };
+    productionPool?: { min?: number; max?: number };
+    baseConfigOverrides?: Partial<Knex.Config>;
+}
+
 export interface HealthCheckResult {
     status: "healthy" | "unhealthy";
     latency: number;

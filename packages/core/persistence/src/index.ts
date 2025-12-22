@@ -1,5 +1,6 @@
 export { DatabaseClient, getDatabaseClient, getKnex, db } from "./postgres/client";
 export { DatabaseConfigBuilder, createDatabaseConfig, knexConfig } from "./postgres/config";
+export { initKnexFileConfig, createDefaultKnexFileConfig } from "./postgres/knex-file-config";
 export { BaseQuery } from "./postgres/base-query";
 export {
     TransactionManager,
@@ -17,6 +18,7 @@ export {
 export type {
     DatabaseConfig,
     KnexConfigOptions,
+    KnexFileConfigOptions,
     HealthCheckResult,
     TransactionCallback,
     PaginationOptions,
